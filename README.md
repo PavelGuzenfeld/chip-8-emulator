@@ -6,7 +6,7 @@
 
 # References
 Some helpful resources:
-
+* http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 * http://en.wikipedia.org/wiki/CHIP-8
 * https://chip-8.github.io/links/
 * https://github.com/JamesGriffin/CHIP-8-Emulator/tree/master/roms
