@@ -1,10 +1,10 @@
-#ifndef CHIP8_HPP
-#define CHIP8_HPP
+#ifndef VM_HPP
+#define VM_HPP
 
 #include <string>
 #include <array>
 
-namespace vm
+namespace chip8
 {
 
 std::string m_title = "Chip8 Emulator";
@@ -15,13 +15,11 @@ size_t const m_windowScale = 10;
 
 struct Memory
 {
-    void set(size_t a_index, unsigned char a_value)
-    using
-    
+    void set(size_t a_index, unsigned char a_value);
     std::array<char, m_memorySize> m_memory;
-}
+};
 
 
-}   //namespace 
+}   //namespace chip8
 
-#endif //CHIP8_HPP
+#endif //VM_HPP
