@@ -2,9 +2,16 @@
 #define IO_HPP
 
 #include <SDL2/SDL.h>
+#include "settings.hpp"
 
 namespace chip8
 {
+
+auto const KEY_BOARD = KeysMap{
+    {SDLK_0, 0}, {SDLK_1, 1}, {SDLK_2, 2}, {SDLK_3, 3},
+    {SDLK_4, 4}, {SDLK_5, 5}, {SDLK_6, 6}, {SDLK_7, 7},
+    {SDLK_8, 8}, {SDLK_9, 9}, {SDLK_a, 10}, {SDLK_b, 11},
+    };
 
 static auto initCanvas(int width, int height)
 {
