@@ -3,8 +3,8 @@
 
 #include<string>
 #include<unordered_map>
-#include"array.hpp"
-#include"stack.hpp"
+#include"lib/array.hpp"
+#include"lib/stack.hpp"
 
 namespace chip8
 {

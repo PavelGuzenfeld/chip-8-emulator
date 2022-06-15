@@ -1,4 +1,4 @@
-#include "mu_test.h"
+#include "lib/mu_test.h"
 #include "settings.hpp"
 
 BEGIN_TEST(memory)
