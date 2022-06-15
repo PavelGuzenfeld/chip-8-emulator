@@ -10,6 +10,7 @@ namespace chip8
 template<typename VAL_T, size_t CAPACITY>
 class Stack
 {
+
 public:   
     void push(VAL_T a_data)
     {
@@ -22,6 +23,7 @@ public:
         assert(m_stack.size > 0);
         return m_stack.pop();
     }
+    
 private:
     std::stack<VAL_T> m_stack;
 
