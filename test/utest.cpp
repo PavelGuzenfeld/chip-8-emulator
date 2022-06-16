@@ -1,6 +1,8 @@
 #include "lib/mu_test.h"
 #include "settings.hpp"
 #include "registers.hpp"
+#include "keyboard.hpp"
+#include "io.hpp"
 
 BEGIN_TEST(memory)
 {
@@ -77,8 +79,40 @@ BEGIN_TEST(stack)
 }
 END_TEST
 
+BEGIN_TEST(keyboard)
+{
+    using namespace chip8;
+    auto keyBoard = KeyBoard(KEY_BOARD);
+    for(U16Bit key = 0; key < KEYS_CAPACITY; ++key)
+    {
+        ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), false);
+    }
+
+    for(auto pairKey: KEY_BOARD)
+    {
+        auto key = pairKey.first;
+        keyBoard.keyDown(key);
+    }
+    for(U16Bit key = 0; key < KEYS_CAPACITY; ++key)
+    {
+        ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), true);
+    }
+
+    for(auto pairKey: KEY_BOARD)
+    {
+        auto key = pairKey.first;
+        keyBoard.keyUp(key);
+    }
+    for(U16Bit key = 0; key < KEYS_CAPACITY; ++key)
+    {
+        ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), false);
+    }
+}
+END_TEST
+
 BEGIN_SUITE(chip 8)
     TEST(memory)
     TEST(registers)
     TEST(stack)
+    TEST(keyboard)
 END_SUITE
