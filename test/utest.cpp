@@ -61,7 +61,24 @@ BEGIN_TEST(registers)
 }
 END_TEST
 
+BEGIN_TEST(stack)
+{
+    using namespace chip8;
+    auto stack = CallStack{};
+    for(U16Bit i = 0; i < STACK_CAPACITY; ++i)
+    {
+        stack.push(i);
+    }
+    for(U16Bit i = 0; i < VX_CAPACITY; ++i)
+    {
+        ASSERT_EQUAL(stack.pop(), STACK_CAPACITY-i-1);
+    }
+
+}
+END_TEST
+
 BEGIN_SUITE(chip 8)
     TEST(memory)
     TEST(registers)
+    TEST(stack)
 END_SUITE
