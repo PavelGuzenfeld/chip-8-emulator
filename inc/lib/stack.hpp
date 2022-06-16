@@ -14,14 +14,17 @@ class Stack
 public:   
     void push(VAL_T a_data)
     {
-        assert(m_stack.size < CAPACITY);
+        assert(m_stack.size() < CAPACITY);
         m_stack.push(a_data);
     }
 
     VAL_T pop()
     {
-        assert(m_stack.size > 0);
-        return m_stack.pop();
+        assert(m_stack.size() > 0);
+        VAL_T val = m_stack.top();
+        m_stack.pop();
+        return val;
+
     }
     
 private:
