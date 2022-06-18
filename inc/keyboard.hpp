@@ -9,31 +9,14 @@ namespace chip8
 
 class KeyBoard
 {
-public:
-    KeyBoard(KeysMap const& a_map)
-    :   m_keyMap{a_map}
-    ,   m_keysState{}
-    {
-
-    }
     
-    void keyDown(U8Bit a_key)
-    {
-        auto index = m_keyMap.at(a_key);
-        m_keysState[index] = true;
-    }
+public:
+    KeyBoard(KeysMap const& a_map);
 
-    void keyUp(U8Bit a_key)
-    {
-        auto index = m_keyMap.at(a_key);
-        m_keysState[index] = false;
-    }
+    void keyDown(U8Bit a_key);
+    void keyUp(U8Bit a_key);
 
-    bool isVirtualKeyDown(U8Bit a_key)
-    {
-        assert(a_key < KEYS_CAPACITY);
-        return m_keysState[a_key];
-    }
+    bool isVirtualKeyDown(U8Bit a_key);
 
 private:
     KeysMap m_keyMap;
