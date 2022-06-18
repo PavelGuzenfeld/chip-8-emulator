@@ -3,6 +3,7 @@
 #include "registers.hpp"
 #include "keyboard.hpp"
 #include "io.hpp"
+#include "vm.hpp"
 
 BEGIN_TEST(memory)
 {
@@ -110,9 +111,32 @@ BEGIN_TEST(keyboard)
 }
 END_TEST
 
+BEGIN_TEST(keyboard_out_of_range)
+{
+    using namespace chip8;
+    auto keyBoard = KeyBoard(KEY_BOARD);
+
+    keyBoard.keyDown(0);
+    ASSERT_PASS();
+
+    keyBoard.keyUp(200);
+    ASSERT_PASS();
+}
+END_TEST
+
+BEGIN_TEST(vm_initialize)
+{
+    using namespace chip8;
+    auto vm = VirtualMachine{KEY_BOARD};
+    ASSERT_PASS();
+}
+END_TEST
+
 BEGIN_SUITE(chip 8)
     TEST(memory)
     TEST(registers)
     TEST(stack)
     TEST(keyboard)
+    TEST(keyboard_out_of_range)
+    TEST(vm_initialize)
 END_SUITE
