@@ -4,6 +4,7 @@
 #include "keyboard.hpp"
 #include "io.hpp"
 #include "vm.hpp"
+#include "canvas.hpp"
 
 BEGIN_TEST(memory)
 {
@@ -132,6 +133,56 @@ BEGIN_TEST(vm_initialize)
 }
 END_TEST
 
+BEGIN_TEST(screen)
+{
+    using namespace chip8;
+    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    
+    renderer.clear();
+    for(U8Bit x = 0; x < CANVAS_WIDTH; ++x)
+    {
+        for(U8Bit y = 0; y < CANVAS_HEIGHT; ++y)
+        {
+            renderer.setPixel(x, y);
+        }
+    }
+    renderer.clear();
+    ASSERT_PASS();
+}
+END_TEST
+
+BEGIN_TEST(canvas)
+{
+    using namespace chip8;
+    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+
+    for(U8Bit y = 0; y < CANVAS_HEIGHT; ++y)
+    {
+        for(U8Bit x = 0; x < CANVAS_WIDTH; ++x)
+        {
+            ASSERT_EQUAL(canvas.isPixelOn(x, y), false);
+            auto wasTrue = canvas.setPixel(x, y);
+            ASSERT_EQUAL(canvas.isPixelOn(x, y), true);
+            ASSERT_EQUAL(wasTrue, false);
+        }
+    }
+
+    for(U8Bit y = 0; y < CANVAS_HEIGHT; ++y)
+    {
+        for(U8Bit x = 0; x < CANVAS_WIDTH; ++x)
+        {
+            ASSERT_EQUAL(canvas.isPixelOn(x, y), true);
+            auto wasTrue = canvas.setPixel(x, y);
+            ASSERT_EQUAL(canvas.isPixelOn(x, y), false);
+            ASSERT_EQUAL(wasTrue, true);
+        }
+    }
+}
+END_TEST
+
 BEGIN_SUITE(chip 8)
     TEST(memory)
     TEST(registers)
@@ -139,4 +190,6 @@ BEGIN_SUITE(chip 8)
     TEST(keyboard)
     TEST(keyboard_out_of_range)
     TEST(vm_initialize)
+    TEST(screen)
+    TEST(canvas)
 END_SUITE
