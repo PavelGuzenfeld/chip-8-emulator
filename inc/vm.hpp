@@ -1,6 +1,13 @@
 #ifndef VM_HPP
 #define VM_HPP
 
+//sleep()
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "settings.hpp"
 #include "registers.hpp"
 #include "keyboard.hpp"
@@ -19,6 +26,24 @@ public:
     ,   m_keyBoard{a_keyBoard}
     {
         loadCharacters();
+    }
+
+    void delay()
+    {
+        if(m_registers.m_delayTimer > 0)
+        {
+            sleep(m_DELAY_TIME);
+            --m_registers.m_delayTimer;
+        }
+    }
+
+    void beep()
+    {
+        if(m_registers.m_soundTimer > 0)
+        {
+            //TODO: Beep(15000, 100 * m_registers.m_soundTimer  );
+            --m_registers.m_soundTimer;
+        }
     }
 
 private:
@@ -49,6 +74,8 @@ private:
     CallStack m_stack;
     Registers m_registers;
     KeyBoard m_keyBoard;
+    U16Bit const m_DELAY_TIME = 100;
+    U16Bit const m_SOUND_FREQUENCY = 15'000;
     
 };
 
