@@ -28,12 +28,22 @@ using CallStack = Stack<U16Bit, STACK_CAPACITY>;
 U16Bit const CHAR_SET_CAPACITY = 16 * 5;
 using CharSet = std::array<U8Bit, CHAR_SET_CAPACITY>;
 
-U16Bit const CANVAS_WIDTH = 64;
-U16Bit const CANVAS_HEIGHT = 32;
-U16Bit const CANVAS_SCALE = 10;
-using Pixels = std::array<U8Bit, CANVAS_WIDTH * CANVAS_WIDTH>;
+U8Bit const CANVAS_WIDTH = 64;
+U8Bit const CANVAS_HEIGHT = 32;
+U8Bit const CANVAS_SCALE = 10;
+using Pixels = std::array<U8Bit, CANVAS_WIDTH * CANVAS_HEIGHT>;
 
 std::string const TITLE = "Chip8 Emulator";
+
+struct Color
+{
+    U8Bit r;
+    U8Bit g;
+    U8Bit b;
+    U8Bit a;
+};
+Color const BLACK = {};
+Color const WHITE = {255, 255, 255, 0};
 
 }   //namespace ship8
 
