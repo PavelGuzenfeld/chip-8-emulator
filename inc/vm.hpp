@@ -11,6 +11,7 @@
 #include "settings.hpp"
 #include "registers.hpp"
 #include "keyboard.hpp"
+#include "canvas.hpp"
 
 namespace chip8
 {
@@ -19,11 +20,12 @@ class VirtualMachine
 {
 
 public:
-    VirtualMachine(KeyBoard const& a_keyBoard)
+    VirtualMachine(KeyBoard& a_keyBoard, Canvas& a_canvas)
     :   m_memory{}
     ,   m_stack{}
     ,   m_registers{}
     ,   m_keyBoard{a_keyBoard}
+    ,   m_canvas{a_canvas}
     {
         loadCharacters();
     }
@@ -73,7 +75,8 @@ private:
     Memory m_memory;
     CallStack m_stack;
     Registers m_registers;
-    KeyBoard m_keyBoard;
+    KeyBoard& m_keyBoard;
+    Canvas& m_canvas;
     U16Bit const m_DELAY_TIME = 100;
     U16Bit const m_SOUND_FREQUENCY = 15'000;
     

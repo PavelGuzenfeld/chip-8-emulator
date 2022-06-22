@@ -116,34 +116,38 @@ public:
 
     }
 
+    void exitProgram()
+    {
+        SDL_Quit();
+        exit(0);
+    }
+
     void operator()()
     {
-        while(true)
+        SDL_Event event;
+        while(SDL_PollEvent(&event))
         {
-            SDL_Event event;
-            while(SDL_PollEvent(&event))
+            switch(event.type)
             {
-                switch(event.type)
+                case SDL_QUIT:
                 {
-                    case SDL_QUIT:
-                    {
-                        return;
-                    }
+                   exitProgram();
+                }
 
-                    case SDL_KEYDOWN:
-                    {
-                        m_keyDown(event.key.keysym.sym);
-                        break;
-                    }
+                case SDL_KEYDOWN:
+                {
+                    m_keyDown(event.key.keysym.sym);
+                    break;
+                }
 
-                    case SDL_KEYUP:
-                    {
-                        m_keyUp(event.key.keysym.sym);
-                        break;
-                    }
+                case SDL_KEYUP:
+                {
+                    m_keyUp(event.key.keysym.sym);
+                    break;
                 }
             }
         }
+
     }
 
 private:
