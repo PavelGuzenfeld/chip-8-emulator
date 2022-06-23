@@ -26,7 +26,7 @@ CPPFLAGS = -I $(INC_DIR)
 SRC_LIST = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_LIST = $(BUILD_DIR)/$(notdir $(SRC_LIST:.cpp=.o))
 BUILD_LIST = $(BUILD_DIR)/*.o
-LDLIBS 	 = -lSDL2
+LDLIBS 	 = -lSDL2 -lpthread
 
 all:
 	$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_LIST) -o $(OBJ_LIST)

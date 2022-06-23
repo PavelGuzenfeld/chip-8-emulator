@@ -1,4 +1,5 @@
 #include "lib/mu_test.h"
+#include <thread>
 #include "settings.hpp"
 #include "registers.hpp"
 #include "keyboard.hpp"
@@ -196,6 +197,52 @@ BEGIN_TEST(maneger_initialize)
 }
 END_TEST
 
+BEGIN_TEST(event_loop)
+{
+    using namespace chip8;
+    
+    auto keyBoard = KeyBoard{KEY_BOARD};
+    auto loop = EventLoop{[&](U8Bit a_key){keyBoard.keyDown(a_key);},
+                [&](U8Bit a_key){keyBoard.keyUp(a_key);}, true};
+    for(U8Bit key = 0; key < 16; ++key)
+    {
+        ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), false);
+    }
+
+    {
+        auto job = [&](){loop();};
+        auto worker = std::thread(job);
+        for(auto key: KEY_BOARD)
+        {
+            simulateKeyEvent(SDL_KEYDOWN, static_cast<SDL_EventType>(key.first));
+        }
+        simulateExit();
+        worker.join();
+
+        for(U8Bit key = 0; key < 16; ++key)
+        {
+            ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), true);
+        }
+    }
+
+    {
+        auto job = [&](){loop();};
+        auto worker = std::thread(job);
+        for(auto key: KEY_BOARD)
+        {
+            simulateKeyEvent(SDL_KEYUP, static_cast<SDL_EventType>(key.first));
+        }
+        simulateExit();
+        worker.join();
+
+        for(U8Bit key = 0; key < 16; ++key)
+        {
+            ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), false);
+        }
+    }
+}
+END_TEST
+
 BEGIN_SUITE(chip 8)
     TEST(memory)
     TEST(registers)
@@ -206,4 +253,5 @@ BEGIN_SUITE(chip 8)
     TEST(canvas)
     TEST(vm_initialize)
     TEST(maneger_initialize)
+    TEST(event_loop)
 END_SUITE

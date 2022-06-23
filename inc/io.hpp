@@ -109,9 +109,10 @@ class EventLoop
 public:
     using OnKey = std::function<void(U8Bit)>;
 
-    EventLoop(OnKey a_keyDown, OnKey a_keyUp)
+    EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false)
     :   m_keyDown(a_keyDown)
     ,   m_keyUp(a_keyUp)
+    ,   m_testMode(a_testMode)
     {
 
     }
@@ -125,12 +126,16 @@ public:
     void operator()()
     {
         SDL_Event event;
-        while(SDL_PollEvent(&event))
+        while(SDL_PollEvent(&event) || m_testMode)
         {
             switch(event.type)
             {
                 case SDL_QUIT:
                 {
+                   if(m_testMode)
+                   {
+                        return;
+                   }
                    exitProgram();
                 }
 
@@ -153,8 +158,23 @@ public:
 private:
     OnKey m_keyDown;
     OnKey m_keyUp;
+    bool m_testMode;
 
 };
+
+void simulateKeyEvent(Uint32 a_eventType, int a_key)
+{
+    SDL_Event sdlevent = {};
+    sdlevent.type = a_eventType;
+    sdlevent.key.keysym.sym = a_key;
+    SDL_PushEvent(&sdlevent);
+}
+
+void simulateExit()
+{
+    SDL_Event sdlevent ={SDL_QUIT};
+    SDL_PushEvent(&sdlevent);
+}
 
 }   //namespace chip8
 
