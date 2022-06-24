@@ -1,8 +1,16 @@
 #include <iostream>
+#include <SDL2/SDL.h>
 #include "io.hpp"
 
 namespace chip8
 {
+
+KeysMap const KEY_BOARD  = {
+    {SDLK_0, 0}, {SDLK_1, 1}, {SDLK_2, 2}, {SDLK_3, 3},
+    {SDLK_4, 4}, {SDLK_5, 5}, {SDLK_6, 6}, {SDLK_7, 7},
+    {SDLK_8, 8}, {SDLK_9, 9}, {SDLK_a, 10}, {SDLK_b, 11},
+    {SDLK_c, 12}, {SDLK_d, 13}, {SDLK_e, 14}, {SDLK_f, 15},
+    };
 
 static auto initScreen(int width, int height)
 {
@@ -24,16 +32,16 @@ Screen::Screen(U8Bit a_width, U8Bit a_height, U8Bit a_scale)
 
 Screen::~Screen()
 {
-    SDL_DestroyWindow(m_screen);
+    SDL_DestroyWindow(static_cast<SDL_Window*>(m_screen));
 }
 
-Screen::operator SDL_Window*()
+void* Screen::internal()
 {
     return m_screen;
 }
 
 Renderer::Renderer(Screen& a_screen, U8Bit a_scale, Color a_back, Color a_fore)
-:   m_renderer{SDL_CreateRenderer(a_screen, -1, SDL_TEXTUREACCESS_TARGET)}
+:   m_renderer{SDL_CreateRenderer(static_cast<SDL_Window*>(a_screen.internal()), -1, SDL_TEXTUREACCESS_TARGET)}
 ,   m_scale(a_scale)
 ,   m_back(a_back)
 ,   m_fore(a_fore)
@@ -43,31 +51,34 @@ Renderer::Renderer(Screen& a_screen, U8Bit a_scale, Color a_back, Color a_fore)
 
 Renderer::~Renderer()
 {
-    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyRenderer(static_cast<SDL_Renderer*>(m_renderer));
 }
 
 void Renderer::setPixel(U8Bit a_x, U8Bit a_y)
 {
-    SDL_SetRenderDrawColor(m_renderer, m_fore.r, m_fore.g, m_fore.b, m_fore.a);
+    SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(m_renderer),
+     m_fore.r, m_fore.g, m_fore.b, m_fore.a);
     drawPixel(a_x, a_y);
 }
 
 void Renderer::resetPixel(U8Bit a_x, U8Bit a_y)
 {
-    SDL_SetRenderDrawColor(m_renderer, m_back.r, m_back.g, m_back.b, m_back.a);
+    SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(m_renderer), 
+    m_back.r, m_back.g, m_back.b, m_back.a);
     drawPixel(a_x, a_y);
 }
 
 void Renderer::clear()
 {
-    SDL_SetRenderDrawColor(m_renderer, m_back.r, m_back.g, m_back.b, m_back.a);
-    SDL_RenderClear(m_renderer);
+    SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(m_renderer),
+     m_back.r, m_back.g, m_back.b, m_back.a);
+    SDL_RenderClear(static_cast<SDL_Renderer*>(m_renderer));
     present();
 }
 
 void Renderer::present()
 {
-    SDL_RenderPresent(m_renderer);
+    SDL_RenderPresent(static_cast<SDL_Renderer*>(m_renderer));
 }
 
 void Renderer::beep(U16Bit a_freq, U16Bit a_duration)
@@ -79,7 +90,7 @@ void Renderer::beep(U16Bit a_freq, U16Bit a_duration)
 void Renderer::drawPixel(U8Bit a_x, U8Bit a_y)
 {
     SDL_Rect r = {a_x * m_scale, a_y * m_scale, m_scale, m_scale};
-    SDL_RenderFillRect(m_renderer, &r);
+    SDL_RenderFillRect(static_cast<SDL_Renderer*>(m_renderer), &r);
 }
 
 EventLoop::EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode)
@@ -128,7 +139,7 @@ void EventLoop::operator()()
 
 }
 
-void simulateKeyEvent(Uint32 a_eventType, int a_key)
+void simulateKeyEvent(int a_eventType, int a_key)
 {
     SDL_Event sdlevent = {};
     sdlevent.type = a_eventType;

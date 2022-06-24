@@ -1,5 +1,6 @@
 #include "lib/mu_test.h"
 #include <thread>
+#include <SDL2/SDL.h>
 #include "settings.hpp"
 #include "registers.hpp"
 #include "keyboard.hpp"
