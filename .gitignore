@@ -32,3 +32,6 @@
 *.app
 *chip-8*
 utest
+
+#vscode
+.vscode
