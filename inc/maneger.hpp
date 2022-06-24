@@ -5,6 +5,7 @@
 #include "io.hpp"
 #include "canvas.hpp"
 #include "vm.hpp"
+#include "code_reader.hpp"
 
 namespace chip8
 {
@@ -12,13 +13,13 @@ namespace chip8
 class Maneger
 {
 public:
-    Maneger()
+    Maneger(CodeRerader const& a_reader)
     :   m_screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE}
     ,   m_renderer{m_screen, CANVAS_SCALE, BLACK, WHITE}
     ,   m_canvas{m_renderer, CANVAS_WIDTH, CANVAS_HEIGHT}
     ,   m_keyBoard{KEY_BOARD}
     ,   m_loop{[&](U8Bit a_key){m_keyBoard.keyDown(a_key);}, [&](U8Bit a_key){m_keyBoard.keyUp(a_key);}}
-    ,   m_vm{m_keyBoard, m_canvas}
+    ,   m_vm{m_keyBoard, m_canvas, a_reader}
     {
 ;
     }

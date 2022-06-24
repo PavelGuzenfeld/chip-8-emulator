@@ -45,6 +45,8 @@ struct Color
 Color const BLACK = {};
 Color const WHITE = {255, 255, 255, 0};
 
+U16Bit const CODE_LOAD_ADDRESS = 0x200;
+
 }   //namespace ship8
 
 #endif // SETTINGS_HPP
