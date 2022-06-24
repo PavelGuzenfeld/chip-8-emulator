@@ -1,8 +1,9 @@
 #ifndef IO_HPP
 #define IO_HPP
 
-#include <SDL2/SDL.h>
+#include <iostream>
 #include <functional>
+#include <SDL2/SDL.h>
 #include "settings.hpp"
 
 namespace chip8
@@ -88,6 +89,12 @@ public:
     void present()
     {
         SDL_RenderPresent(m_renderer);
+    }
+
+    void beep(U16Bit a_freq, U16Bit a_duration)
+    {
+        std::cout << '\a';
+        //https://stackoverflow.com/questions/4060601/make-sounds-beep-with-c
     }
 
 private:

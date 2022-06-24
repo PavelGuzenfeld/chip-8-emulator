@@ -47,6 +47,11 @@ public:
         m_renderer.clear();
     }
 
+    void beep(U16Bit a_freq, U16Bit a_duration)
+    {
+        m_renderer.beep(a_freq, a_duration);
+    }
+
 private:
     U16Bit index(U8Bit a_x, U8Bit a_y)
     {
