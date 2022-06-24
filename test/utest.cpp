@@ -177,25 +177,25 @@ BEGIN_TEST(canvas)
 }
 END_TEST
 
-BEGIN_TEST(vm_initialize)
-{
-    using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
-    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
-    auto keyBoard = KeyBoard(KEY_BOARD);
-    auto vm = VirtualMachine{keyBoard, canvas};
-    ASSERT_PASS();
-}
-END_TEST
+// BEGIN_TEST(vm_initialize)
+// {
+//     using namespace chip8;
+//     auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+//     auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+//     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+//     auto keyBoard = KeyBoard(KEY_BOARD);
+//     auto vm = VirtualMachine{keyBoard, canvas};
+//     ASSERT_PASS();
+// }
+// END_TEST
 
-BEGIN_TEST(maneger_initialize)
-{
-    using namespace chip8;
-    auto m = Maneger{};
-    ASSERT_PASS();
-}
-END_TEST
+// BEGIN_TEST(maneger_initialize)
+// {
+//     using namespace chip8;
+//     auto m = Maneger{};
+//     ASSERT_PASS();
+// }
+// END_TEST
 
 BEGIN_TEST(event_loop)
 {
@@ -251,7 +251,11 @@ BEGIN_SUITE(chip 8)
     TEST(keyboard_out_of_range)
     TEST(screen)
     TEST(canvas)
-    TEST(vm_initialize)
-    TEST(maneger_initialize)
+    //TEST(vm_initialize)
+    //TEST(maneger_initialize)
     TEST(event_loop)
 END_SUITE
+
+//TODO: Test printing sprites
+//TODO: Seporate cpp form hpp
+//TODO: reader test
