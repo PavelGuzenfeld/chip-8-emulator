@@ -35,7 +35,7 @@ all:
 	$(BIN_DIR)/./$(PROG_NAME)
 
 check:
-	$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_LIST) -o $(OBJ_LIST)
+	$(foreach SRC_FILE, $(SRC_LIST) ,$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_FILE) -o $(BUILD_DIR)/$(notdir $(SRC_FILE:.cpp=.o));)
 	$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(TEST_SRC_PATH) -o $(TEST_BIN_PATH)
 	$(CXX) $(BUILD_LIST) -o $(BIN_DIR)/$(TEST_NAME) $(LDLIBS)
 	$(BIN_DIR)/$(TEST_NAME) -v
