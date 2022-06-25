@@ -10,55 +10,17 @@ namespace chip8
 class Canvas
 {
 public:
-    Canvas(Renderer& a_renderer, U8Bit a_width, U8Bit a_height)
-    :   m_pixels{}   
-    ,   m_renderer(a_renderer)
-    ,   m_WIDTH(a_width)
-    ,   m_HEIGHT(a_height)
-    {
+    Canvas(Renderer& a_renderer, U8Bit a_width, U8Bit a_height);
 
-    }
+    bool setPixel(U8Bit a_x, U8Bit a_y);
+    bool isPixelOn(U8Bit a_x, U8Bit a_y);
 
-    bool setPixel(U8Bit a_x, U8Bit a_y)
-    {
-        auto i = index(a_x, a_y);
-        auto wasTrue =  m_pixels[i];
-        m_pixels[i] ^= true;
-        if(wasTrue)
-        {
-            m_renderer.resetPixel(a_x, a_y);
-        }
-        else
-        {
-            m_renderer.setPixel(a_x, a_y);
-        }
-        m_renderer.present();
-        return wasTrue;
-    }
+    void clear();
 
-    bool isPixelOn(U8Bit a_x, U8Bit a_y)
-    {
-        U16Bit i = index(a_x, a_y);
-        return m_pixels[i];
-    }
-
-    void clear()
-    {
-        m_renderer.clear();
-    }
-
-    void beep(U16Bit a_freq, U16Bit a_duration)
-    {
-        m_renderer.beep(a_freq, a_duration);
-    }
+    void beep(U16Bit a_freq, U16Bit a_duration);
 
 private:
-    U16Bit index(U8Bit a_x, U8Bit a_y)
-    {
-        U8Bit x = a_x % m_WIDTH;
-        U8Bit y = a_y % m_HEIGHT;
-        return x + y * m_WIDTH;
-    }
+    U16Bit index(U8Bit a_x, U8Bit a_y);
 
 private:
     Pixels m_pixels;
