@@ -11,3 +11,9 @@ Some helpful resources:
 * https://chip-8.github.io/links/
 * https://github.com/JamesGriffin/CHIP-8-Emulator/tree/master/roms
 * https://github.com/corax89/chip8-test-rom
+
+# Games ROM
+* https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+
+TODO:
+* Replace system beeping with stl sound.
