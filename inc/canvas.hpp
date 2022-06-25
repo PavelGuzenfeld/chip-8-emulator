@@ -13,6 +13,7 @@ public:
     Canvas(Renderer& a_renderer, U8Bit a_width, U8Bit a_height);
 
     bool setPixel(U8Bit a_x, U8Bit a_y);
+    bool drawBits(U8Bit a_x, U8Bit a_y, U8Bit a_bits);
     bool isPixelOn(U8Bit a_x, U8Bit a_y);
 
     void clear();

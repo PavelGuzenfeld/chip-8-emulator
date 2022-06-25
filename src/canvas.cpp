@@ -1,5 +1,4 @@
 #include "canvas.hpp"
-
 namespace chip8
 {
 
@@ -27,6 +26,26 @@ bool Canvas::setPixel(U8Bit a_x, U8Bit a_y)
     }
     m_renderer.present();
     return wasTrue;
+}
+
+bool Canvas::drawBits(U8Bit a_x, U8Bit a_y, U8Bit a_bits)
+{
+    bool wasSet = false;
+    U8Bit checkBit = 0b1000'0000;
+    for(U8Bit offsetX = 0; offsetX < 8; ++offsetX)
+    {
+        ;
+        if(a_bits & checkBit)
+        {
+            bool wasSet_inner = setPixel(a_x + offsetX, a_y);
+            if(wasSet_inner)
+            {
+                wasSet = wasSet_inner;
+            }
+        }
+        checkBit >>= 1;
+    }
+    return wasSet;
 }
 
 bool Canvas::isPixelOn(U8Bit a_x, U8Bit a_y)

@@ -18,6 +18,7 @@ public:
 
     void delay();
     void beep();
+    void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
     void exec();
 
 private:
@@ -31,8 +32,8 @@ private:
     Registers m_registers;
     KeyBoard& m_keyBoard;
     Canvas& m_canvas;
-    U16Bit const m_DELAY_TIME = 100;
-    U16Bit const m_SOUND_FREQUENCY = 15'000;
+    U16Bit const m_DELAY_TIME = 100; //msec
+    U16Bit const m_SOUND_FREQUENCY = 15'000; //hz
     
 };
 
