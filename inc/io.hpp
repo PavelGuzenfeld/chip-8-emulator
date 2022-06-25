@@ -69,3 +69,5 @@ void simulateExit();
 }   //namespace chip8
 
 #endif // IO_HPP
+
+//TODO: switch to c++ solution for void*
