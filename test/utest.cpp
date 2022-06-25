@@ -8,6 +8,8 @@
 #include "vm.hpp"
 #include "canvas.hpp"
 #include "maneger.hpp"
+#include "code_reader.hpp"
+#include <unistd.h> // sleep()
 
 BEGIN_TEST(memory)
 {
@@ -178,26 +180,6 @@ BEGIN_TEST(canvas)
 }
 END_TEST
 
-// BEGIN_TEST(vm_initialize)
-// {
-//     using namespace chip8;
-//     auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-//     auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
-//     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
-//     auto keyBoard = KeyBoard(KEY_BOARD);
-//     auto vm = VirtualMachine{keyBoard, canvas};
-//     ASSERT_PASS();
-// }
-// END_TEST
-
-// BEGIN_TEST(maneger_initialize)
-// {
-//     using namespace chip8;
-//     auto m = Maneger{};
-//     ASSERT_PASS();
-// }
-// END_TEST
-
 BEGIN_TEST(event_loop)
 {
     using namespace chip8;
@@ -244,19 +226,53 @@ BEGIN_TEST(event_loop)
 }
 END_TEST
 
+BEGIN_TEST(code_reader)
+{
+    using namespace chip8;
+    auto code = CodeRerader{"./test/code_reader_test.file"};
+    //TRACER << code.buffer << "\n";
+    ASSERT_EQUAL_STR(code.buffer, "hello world!");
+}
+END_TEST
+
+BEGIN_TEST(vm_initialize)
+{
+    using namespace chip8;
+    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+    auto keyBoard = KeyBoard(KEY_BOARD);
+    auto code = CodeRerader{"./test/code_reader_test.file"};
+    auto vm = VirtualMachine{keyBoard, canvas, code};
+    vm.delay();
+    vm.beep();
+    vm.drawSprite(0, 0, 0, 5);
+    sleep(3);
+    ASSERT_PASS();
+}
+END_TEST
+
+// BEGIN_TEST(maneger_initialize)
+// {
+//     using namespace chip8;
+//     auto m = Maneger{};
+//     ASSERT_PASS();
+// }
+// END_TEST
+
+
 BEGIN_SUITE(chip 8)
-    TEST(memory)
-    TEST(registers)
-    TEST(stack)
-    TEST(keyboard)
-    TEST(keyboard_out_of_range)
-    TEST(screen)
-    TEST(canvas)
-    //TEST(vm_initialize)
+    // TEST(memory)
+    // TEST(registers)
+    // TEST(stack)
+    // TEST(keyboard)
+    // TEST(keyboard_out_of_range)
+    // TEST(screen)
+    // TEST(canvas)
+    // TEST(event_loop)
+    TEST(code_reader)
+    TEST(vm_initialize)
     //TEST(maneger_initialize)
-    TEST(event_loop)
 END_SUITE
 
 //TODO: Test printing sprites
-//TODO: Seporate cpp form hpp
-//TODO: reader test
