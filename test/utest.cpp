@@ -235,7 +235,7 @@ BEGIN_TEST(code_reader)
 }
 END_TEST
 
-BEGIN_TEST(vm_initialize)
+BEGIN_TEST(print_sprites)
 {
     using namespace chip8;
     auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
@@ -246,19 +246,26 @@ BEGIN_TEST(vm_initialize)
     auto vm = VirtualMachine{keyBoard, canvas, code};
     vm.delay();
     vm.beep();
-    vm.drawSprite(0, 0, 0, 5);
-    sleep(3);
+    for(U8Bit i = 0; i < 0x10; ++i)
+    {
+        vm.drawSprite(0, 0, i, 5);
+    }
+
+    for(U8Bit i = 0; i < 0x10; ++i)
+    {
+        vm.drawSprite(60, 30, i, 5);
+    }
     ASSERT_PASS();
 }
 END_TEST
 
-// BEGIN_TEST(maneger_initialize)
-// {
-//     using namespace chip8;
-//     auto m = Maneger{};
-//     ASSERT_PASS();
-// }
-// END_TEST
+BEGIN_TEST(maneger_initialize)
+{
+    using namespace chip8;
+    auto m = Maneger{};
+    ASSERT_PASS();
+}
+END_TEST
 
 
 BEGIN_SUITE(chip 8)
@@ -271,8 +278,7 @@ BEGIN_SUITE(chip 8)
     // TEST(canvas)
     // TEST(event_loop)
     TEST(code_reader)
-    TEST(vm_initialize)
-    //TEST(maneger_initialize)
+    TEST(print_sprites)
+    TEST(maneger_initialize)
 END_SUITE
 
-//TODO: Test printing sprites
