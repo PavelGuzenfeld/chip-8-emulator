@@ -253,7 +253,7 @@ BEGIN_TEST(print_sprites)
 
     for(U8Bit i = 0; i < 0x10; ++i)
     {
-        vm.drawSprite(60, 30, i, 5);
+        vm.drawSprite(61, 31, i, 5);
     }
     ASSERT_PASS();
 }
@@ -262,7 +262,8 @@ END_TEST
 BEGIN_TEST(maneger_initialize)
 {
     using namespace chip8;
-    auto m = Maneger{};
+    auto code = CodeRerader{"./test/code_reader_test.file"};
+    auto m = Maneger{code};
     ASSERT_PASS();
 }
 END_TEST
