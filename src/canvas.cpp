@@ -16,13 +16,15 @@ bool Canvas::setPixel(U8Bit a_x, U8Bit a_y)
     auto i = index(a_x, a_y);
     auto wasTrue =  m_pixels[i];
     m_pixels[i] ^= true;
+    U8Bit x = a_x % m_WIDTH;
+    U8Bit y = a_y % m_HEIGHT;
     if(wasTrue)
     {
-        m_renderer.resetPixel(a_x, a_y);
+        m_renderer.resetPixel(x, y);
     }
     else
     {
-        m_renderer.setPixel(a_x, a_y);
+        m_renderer.setPixel(x, y);
     }
     m_renderer.present();
     return wasTrue;
@@ -34,7 +36,6 @@ bool Canvas::drawBits(U8Bit a_x, U8Bit a_y, U8Bit a_bits)
     U8Bit checkBit = 0b1000'0000;
     for(U8Bit offsetX = 0; offsetX < 8; ++offsetX)
     {
-        ;
         if(a_bits & checkBit)
         {
             bool wasSet_inner = setPixel(a_x + offsetX, a_y);
