@@ -3,6 +3,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <map>
+#include <functional>
 #include <array>
 #include "lib/stack.hpp"
 
@@ -47,6 +49,8 @@ Color const WHITE = {255, 255, 255, 0};
 
 U16Bit const CODE_LOAD_ADDRESS = 0x200;
 
-}   //namespace ship8
+using InstructionSet = std::map<U16Bit, std::function<void(U16Bit)>>;
+
+} // namespace chip8
 
 #endif // SETTINGS_HPP

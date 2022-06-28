@@ -31,10 +31,20 @@ static auto const CHARS = Memory{
         0xF0, 0x80, 0xF0, 0x80, 0x80, //F
     };
 
+auto VirtualMachine::instructionSetInit()
+{
+    return InstructionSet{
+        {0x00e0, [&](U16Bit){m_canvas.clear();}},
+        {0x00ee, [&](U16Bit){m_registers.m_PC = m_stack.pop();}},
+        {0x1fff, [&](U16Bit a_address){m_registers.m_PC = a_address & 0xfff;}},
+    };
+}
+
 VirtualMachine::VirtualMachine(KeyBoard& a_keyBoard, Canvas& a_canvas, CodeRerader const& a_code)
 :   m_memory{CHARS}
 ,   m_stack{}
 ,   m_registers{}
+,   m_instructionSet{instructionSetInit()}
 ,   m_keyBoard{a_keyBoard}
 ,   m_canvas{a_canvas}
 {
@@ -113,5 +123,7 @@ U16Bit VirtualMachine::readInstruction(U16Bit a_address)
     auto secondByte = m_memory[a_address + 1];
     return (firstByte << 8) | secondByte;
 }
+
+
 
 }   //namespace chip8

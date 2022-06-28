@@ -17,3 +17,4 @@ Some helpful resources:
 
 TODO:
 * Replace system beeping with stl sound.
+* Add missing consts to header files where appropriate.

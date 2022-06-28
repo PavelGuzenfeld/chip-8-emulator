@@ -57,6 +57,10 @@ bool Canvas::isPixelOn(U8Bit a_x, U8Bit a_y)
 
 void Canvas::clear()
 {
+    for(U16Bit i = 0; i < m_WIDTH * m_HEIGHT; ++i)
+    {
+        m_pixels[i] = false;
+    }
     m_renderer.clear();
 }
 

@@ -25,11 +25,13 @@ private:
     void loadCharacters();
     void loadCode(CodeRerader const& a_code);
     U16Bit readInstruction(U16Bit a_address);
+    auto instructionSetInit();
 
 private:
     Memory m_memory;
     CallStack m_stack;
     Registers m_registers;
+    InstructionSet m_instructionSet;
     KeyBoard& m_keyBoard;
     Canvas& m_canvas;
     U16Bit const m_DELAY_TIME = 100; //msec
