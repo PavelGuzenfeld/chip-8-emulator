@@ -19,6 +19,7 @@ void Maneger::mainLoop()
     while(true)
     {
         m_loop();
+        m_vm.execute();
         m_vm.delay();
         m_vm.beep();
     }

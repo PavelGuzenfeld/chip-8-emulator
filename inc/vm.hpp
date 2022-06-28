@@ -19,7 +19,7 @@ public:
     void delay();
     void beep();
     void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
-    void exec();
+    void execute();
 
 private:
     void loadCharacters();

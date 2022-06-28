@@ -268,6 +268,26 @@ BEGIN_TEST(maneger_initialize)
 }
 END_TEST
 
+BEGIN_TEST(opCode_execution)
+{
+    using namespace chip8;
+    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+    auto keyBoard = KeyBoard(KEY_BOARD);
+    auto code = CodeRerader{"./test/test.bin"};
+    auto vm = VirtualMachine{keyBoard, canvas, code};
+    for(U8Bit i = 0; i < 0x10; ++i)
+    {
+        vm.drawSprite(0, 0, i, 5);
+    }
+    sleep(1);
+    vm.execute();
+    sleep(1);
+
+    ASSERT_PASS();
+}
+END_TEST
 
 BEGIN_SUITE(chip 8)
     // TEST(memory)
@@ -281,5 +301,6 @@ BEGIN_SUITE(chip 8)
     TEST(code_reader)
     TEST(print_sprites)
     TEST(maneger_initialize)
+    TEST(opCode_execution)
 END_SUITE
 

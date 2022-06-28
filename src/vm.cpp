@@ -36,7 +36,7 @@ auto VirtualMachine::instructionSetInit()
     return InstructionSet{
         {0x00e0, [&](U16Bit){m_canvas.clear();}},
         {0x00ee, [&](U16Bit){m_registers.m_PC = m_stack.pop();}},
-        {0x1fff, [&](U16Bit a_address){m_registers.m_PC = a_address & 0xfff;}},
+        {0x1fff, [&](U16Bit a_opCode){m_registers.m_PC = a_opCode & 0xfff;}},
     };
 }
 
@@ -89,11 +89,11 @@ void VirtualMachine::beep()
     }
 }
 
-void VirtualMachine::exec()
+void VirtualMachine::execute()
 {
-    auto instruction = readInstruction(m_registers.m_PC);
-    std::cout << instruction << "\n";
-    //TODO: execute
+    auto opCode = readInstruction(m_registers.m_PC);
+    std::cout << "m_PC-> " << m_registers.m_PC << "opCode-> " << opCode << "\n";
+    m_instructionSet.lower_bound(opCode)->second(opCode);
     m_registers.m_PC += 2;
 }
 
