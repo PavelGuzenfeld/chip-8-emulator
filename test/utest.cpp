@@ -1,6 +1,9 @@
 #include "lib/mu_test.h"
 #include <thread>
 #include <SDL2/SDL.h>
+#include <unistd.h> // sleep()
+
+#define private public
 #include "settings.hpp"
 #include "registers.hpp"
 #include "keyboard.hpp"
@@ -9,7 +12,7 @@
 #include "canvas.hpp"
 #include "maneger.hpp"
 #include "code_reader.hpp"
-#include <unistd.h> // sleep()
+
 
 BEGIN_TEST(memory)
 {
@@ -281,9 +284,9 @@ BEGIN_TEST(opCode_execution)
     {
         vm.drawSprite(0, 0, i, 5);
     }
-    sleep(1);
+  
     vm.execute();
-    sleep(1);
+ 
 
     ASSERT_PASS();
 }
