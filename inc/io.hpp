@@ -47,8 +47,6 @@ private:
 class EventLoop
 {
 public:
-    using OnKey = std::function<void(U8Bit)>;
-
     EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
 
     void operator()();
@@ -61,6 +59,8 @@ private:
     bool m_testMode;
 
 };
+
+OnKeyDown waitForKeyPressFactory(OnKey a_keyDown);
 
 void simulateKeyEvent(int a_eventType, int a_key);
 void simulateExit();

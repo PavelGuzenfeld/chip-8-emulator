@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <stdexcept>
 #include "io.hpp"
 
 namespace chip8
@@ -151,6 +152,35 @@ void simulateExit()
 {
     SDL_Event sdlevent ={SDL_QUIT};
     SDL_PushEvent(&sdlevent);
+}
+
+static U8Bit emulatedKey(SDL_Keycode a_key)
+try 
+{
+    return KEY_BOARD.at(a_key);
+} 
+catch(std::out_of_range& e)
+{
+    return U8Bit(-1);
+}
+
+OnKeyDown waitForKeyPressFactory(OnKey a_keyDown)
+{
+    return [&]()
+        {
+            SDL_Event event;
+            while(SDL_WaitEvent(&event))
+            {
+                if(event.type != SDL_KEYDOWN)
+                {
+                    continue;
+                }
+            }
+            
+            auto c = event.key.keysym.sym;
+            a_keyDown(c);
+            return emulatedKey(c);
+        };
 }
 
 }   //namespace chip8

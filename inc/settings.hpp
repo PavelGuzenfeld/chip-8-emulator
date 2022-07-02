@@ -23,6 +23,8 @@ using Vx = std::array<U8Bit, VX_CAPACITY>;
 U16Bit const KEYS_CAPACITY = 16;
 using Keys = std::array<U8Bit, KEYS_CAPACITY>;
 using KeysMap = std::unordered_map<U8Bit, U8Bit>;
+using OnKey = std::function<void(U8Bit)>;
+using OnKeyDown = std::function<U8Bit()>;
 
 U16Bit const STACK_CAPACITY = 16;
 using CallStack = Stack<U16Bit, STACK_CAPACITY>;

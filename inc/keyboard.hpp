@@ -1,7 +1,6 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
-#include "cassert"
 #include "settings.hpp"
 
 namespace chip8
@@ -16,13 +15,20 @@ public:
     void keyDown(U8Bit a_key);
     void keyUp(U8Bit a_key);
 
-    bool isVirtualKeyDown(U8Bit a_key);
+    bool isVirtualKeyDown(U8Bit a_key) const;
+
+    U8Bit waitForKeyPress();
 
 private:
     KeysMap m_keyMap;
     Keys m_keysState;
-
 };
+
+OnKey onKeyUp(KeyBoard& a_keyBoard);
+OnKey onKeyDown(KeyBoard& a_keyBoard);
+
+
+
 
 }   //namespace chip8
 
