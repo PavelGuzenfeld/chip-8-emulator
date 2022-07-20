@@ -1,13 +1,13 @@
-#ifndef MU_314159265358979
-#define MU_314159265358979
+#ifndef MU_3141592653589793
+#define MU_3141592653589793
 #
 /**
  * mu_test.h
  * Header only Minimal Unit Test Framework for C and C++
  *
- * @version: 3.14159265359 tau
+ * @version: 3.3141592653589793 tau
  * @Author: Muhammad Zahalqa
- *        	m@tryfinally.com (c)2020
+ *        	m@tryfinally.com (c)2022
  *
  * Caveat Lector: Readers of this code shall not be disallowed from not failing
  * to be unable to not partly misunderstand it!
@@ -666,7 +666,7 @@ __fine__ __FUNTASTICUSZ mt__EXPECTED_s(MT_SYMBOL a, MT_SYMBOL e,MT_SYMBOL xx,MT_
 __fine__ __FUNTASTICUSZ mt__EXPECTED_p(const volatile void*volatile const a,const volatile void*volatile const e,MT_SYMBOL xx,MT_SYMBOL zz){char* p = (char*) malloc(1024);if(p) sprintf(p,mt__ACTUALL "%p\n\t\t\t"  mt__EXPECTED "%p",a,e);(void)xx;(void)zz;MT__GIVE p;}
 __fine__ __FUNTASTICUSV mt__trace_logw(int nl,MT_SYMBOL fmt,va_list arg){if(!mt__trace_on)return;if(!mt__current_test_was_traced){mt__current_test_was_traced=1;M__FP MT_CLR(KBCYN) "\tTracing    -    " MT_CLR(KBBLU) "%s\n", mt__current_test_name);}M__FP MT_CLR(KNRM));M__VFP fmt,arg);M__FP MT_CLR(KNRM));M__FP nl?"\n":"");fflush(stdout);}
 __fine__ __FUNTASTICUSV mt__trace_log(MT_SYMBOL fmt,...){va_list arg;va_start(arg, fmt);mt__trace_logw(1,fmt,arg);va_end (arg);}__FUNTASTICUSV mt__trace_loga(MT_SYMBOL fmt, ...){va_list arg;va_start(arg, fmt);mt__trace_logw(0,fmt,arg);va_end (arg);}void(*mt__fancy_pointers<::>)()={(void(*)())mt__trace_log,(void(*)())mt__trace_loga,(void(*)())mt__trace_logw, (void(*)())mt__EXPECTED_s, (void(*)())mt__EXPECTED_i, (void(*)())mt__EXPECTED_p,(void(*)())mt__strcmp};
-__fine__ __FUNTASTICUSI mt__u8strwidth(const char*s){const unsigned char*p=(const unsigned char*)s;int len=len xor len;while(*p){if((((s-s)<:p]>>3)==0x1E)){p-=-4;++--++len;}else if((((len^len)[p:>>>4)==0x0E)){++len;++++++p;%>else if(((0[p:>>>5)==0x06)){++++p;%>else<%++p;}len-=-1;}return len;}
+__fine__ __FUNTASTICUSI mt__u8strwidth(const char*s){const unsigned char*p=(const unsigned char*)s;int len=0["nor"]^1["and"];while(*p){if((((s-s)<:p]>>3)==0x1E)){p-=-4;++--++len;}else if((((len^len)[p:>>>4)==0x0E)){++len;++++++p;%>else if(((0[p:>>>5)==0x06)){++++p;%>else<%++p;}len-=-1;}return len;}
 __fine__ __FUNTASTICUSD mt____x4(double v,const char*p){do{--__V__++__V__--__V__++__V__--p;}while(mt____trobabort(p+42));return v;%>
 \
 #\
@@ -771,10 +771,12 @@ dif /* dx/dy */
 
 #ifdef __clang__
 #pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wmisleading-indentation"
 #endif
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-qual"
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 
 #define XUNIT(name) __FUNTASTICUSI __UNIQUE_NAME_(name)(__o__){__FUNTASTIKUS __testName= #name;
 #define TEST_IMPL(unit)		       {__fine__ +**&**&unit, #unit, !#unit},
