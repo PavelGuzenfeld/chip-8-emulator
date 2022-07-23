@@ -267,15 +267,6 @@ BEGIN_TEST(print_sprites)
 }
 END_TEST
 
-BEGIN_TEST(maneger_initialize)
-{
-    using namespace chip8;
-    auto code = CodeRerader{"./test/code_reader_test.file"};
-    auto m = Maneger{code};
-    ASSERT_PASS();
-}
-END_TEST
-
 BEGIN_TEST(display_opcodes)
 {
     using namespace chip8;
@@ -564,6 +555,165 @@ BEGIN_TEST(opCode_execution)
         }
         ASSERT_EQUAL(static_cast<int>(sum / 10000), int(255 / 2));
     }
+
+    {
+        // 0xex9e
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.m_registers.m_PC = 0x200;
+        keyBoard.keyDown(SDLK_2);
+        vm.runOpcode(0xe09e);
+        ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
+    }
+
+    {
+        // 0xex9e
+        vm.m_registers.m_vx[0] = 0x02;
+        vm.m_registers.m_PC = 0x200;
+        keyBoard.keyDown(SDLK_2);
+        vm.runOpcode(0xe09e);
+        ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
+    }
+
+    {
+        // 0xexa1
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.m_registers.m_PC = 0x200;
+        keyBoard.keyDown(SDLK_2);
+        vm.runOpcode(0xe0a1);
+        ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
+    }
+
+    {
+        // 0xexa1
+        vm.m_registers.m_vx[0] = 0x02;
+        vm.m_registers.m_PC = 0x200;
+        keyBoard.keyDown(SDLK_2);
+        vm.runOpcode(0xe0a1);
+        ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
+    }
+
+    {
+        // 0xfx07
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.m_registers.m_delayTimer = 0x02;
+        vm.runOpcode(0xf007);
+        ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
+    }
+
+    {
+        // 0xfx0a
+        vm.m_registers.m_vx[0] = 0x01;
+        auto job = [&]()
+        { vm.runOpcode(0xf00a); };
+        auto worker = std::thread(job);
+        simulateKeyEvent(SDL_KEYDOWN, SDLK_2);
+        worker.join();
+        ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
+    }
+
+    {
+        // 0xfx15
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.runOpcode(0xf015);
+        ASSERT_EQUAL(vm.m_registers.m_delayTimer, 0x01);
+    }
+
+    {
+        // 0xfx18
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.runOpcode(0xf018);
+        ASSERT_EQUAL(vm.m_registers.m_soundTimer, 0x01);
+    }
+
+    {
+        // 0xfx1e
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.m_registers.m_index = 0x02;
+        vm.runOpcode(0xf01e);
+        ASSERT_EQUAL(vm.m_registers.m_index, 0x03);
+    }
+
+    {
+        // 0xfx29
+        vm.m_registers.m_vx[0] = 0x01;
+        vm.runOpcode(0xf029);
+        ASSERT_EQUAL(vm.m_registers.m_index, 0x01 * 5);
+    }
+
+    {
+        // 0xfx33
+        vm.m_registers.m_vx[0] = 123;
+        vm.runOpcode(0xf033);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 1);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 2);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 3);
+    }
+
+    {
+        // 0xfx33
+        // case vx = 0x0
+        vm.m_registers.m_vx[0] = 0;
+        vm.runOpcode(0xf033);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 0);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 0);
+        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 0);
+    }
+
+    {
+        // 0xfx55
+        for (auto i = 30; i < 5; ++i)
+        {
+            vm.m_registers.m_vx[i] = i;
+        }
+        vm.m_registers.m_index = 0x200;
+        vm.runOpcode(0xf555);
+        for (auto i = 30; i < 5; ++i)
+        {
+            ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + i], i);
+        }
+    }
+
+    {
+        // 0xfx65
+        vm.m_registers.m_index = 0x200;
+        for (auto i = 50; i < 5; ++i)
+        {
+            vm.m_memory[vm.m_registers.m_index + i] = i;
+        }
+        vm.runOpcode(0xf565);
+        for (auto i = 50; i < 5; ++i)
+        {
+            ASSERT_EQUAL(vm.m_registers.m_vx[i], i);
+        }
+    }
+}
+END_TEST
+
+BEGIN_TEST(maneger_initialize)
+{
+    using namespace chip8;
+    auto code = CodeRerader{"./test/code_reader_test.file"};
+    auto m = Maneger{code};
+    ASSERT_PASS();
+}
+END_TEST
+
+BEGIN_TEST(runtime)
+{
+    using namespace chip8;
+    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+    auto keyBoard = KeyBoard(KEY_BOARD);
+    auto code = CodeRerader{"./rom/tank"};
+    auto vm = VirtualMachine{keyBoard, canvas, code};
+
+    for (auto i = 0; i < 20; ++i)
+    {
+        vm.execute();
+    }
+
+    ASSERT_PASS();
 }
 END_TEST
 
@@ -578,7 +728,8 @@ TEST(canvas)
 TEST(event_loop)
 TEST(code_reader)
 TEST(print_sprites)
-TEST(maneger_initialize)
 TEST(display_opcodes)
 TEST(opCode_execution)
+TEST(maneger_initialize)
+TEST(runtime)
 END_SUITE
