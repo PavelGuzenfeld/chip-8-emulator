@@ -1,22 +1,21 @@
 #include <iostream>
-#include "io.hpp"
-#include "vm.hpp"
+#include "code_reader.hpp"
+#include "maneger.hpp"
 
-int main(int argc, char** argv)
-{   
-    if(argc < 2)
+int main(int argc, char **argv)
+{
+
+    if (argc < 2)
     {
-        std::count << "You must provide a file to load\n";
+        std::cout << "You must provide a file to load\n";
         return -1;
     }
-    
-    using namespace chip8;
-    auto window = Canvas{460, 320};
-    auto renderer = Renderer{window};
-    renderer.drawRect();
-    renderer.present();
 
-    loop();
-    
+    using namespace chip8;
+    std::filesystem::path filePath{argv[1]};
+    CodeRerader code{filePath};
+    Maneger manager{code};
+    manager.mainLoop();
+
     return 0;
 }
