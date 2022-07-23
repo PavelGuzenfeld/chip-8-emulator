@@ -2,8 +2,9 @@
 #ifdef _WIN32
 #include <Windows.h> Beep()
 #else
+#include <chrono> // std::chrono
+#include <thread>
 #include <unistd.h> // sleep()
-#include <chrono>   // std::chrono
 #include <iostream> // std::cout
 #endif
 #include <algorithm> // copy()
@@ -37,7 +38,7 @@ namespace chip8
         return InstructionSet{
 
             // 00E0 - CLS
-            {0x000e, [&](U16Bit)
+            {0x00e0, [&](U16Bit)
              {
                  // Clear the display.
                  m_canvas.clear();
@@ -427,14 +428,15 @@ namespace chip8
     {
         if (m_registers.m_delayTimer > 0)
         {
-            sleep(m_DELAY_TIME);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(m_DELAY_TIME));
             --m_registers.m_delayTimer;
         }
     }
 
     static void linuxBeep()
     {
-        system("echo -e \"\007\" >/dev/tty10");
+        // system("echo -e \"\007\" >/dev/tty10");
         std::cout << "\a"
                   << "second\n"
                   << std::flush;
@@ -453,7 +455,7 @@ namespace chip8
                 linuxBeep();
                 auto t_end = std::chrono::high_resolution_clock::now();
                 double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
-                if (elapsed_time_ms < m_DELAY_TIME)
+                if (elapsed_time_ms > m_DELAY_TIME)
                 {
                     break;
                 }
@@ -466,9 +468,9 @@ namespace chip8
     void VirtualMachine::execute()
     {
         auto opCode = readInstruction(m_registers.m_PC);
-        std::cout << "m_PC-> " << m_registers.m_PC << "opCode-> " << opCode << "\n";
+        std::cout << "m_PC-> " << m_registers.m_PC << " opCode-> " << std::hex << std::showbase << opCode << "\n";
         m_registers.m_PC += 2;
-        m_instructionSet.lower_bound(opCode)->second(opCode);
+        runOpcode(opCode);
     }
 
     void VirtualMachine::drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines)
@@ -509,7 +511,8 @@ namespace chip8
     void VirtualMachine::runOpcode(U16Bit a_opCode)
     {
         auto normalizedOpcode = normalizeOpcode(a_opCode);
-        m_instructionSet.lower_bound(normalizedOpcode)->second(a_opCode);
+        auto runCommand = m_instructionSet.lower_bound(normalizedOpcode)->second;
+        runCommand(a_opCode);
     }
 
 } // namespace chip8

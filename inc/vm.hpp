@@ -10,37 +10,36 @@
 namespace chip8
 {
 
-class VirtualMachine
-{
+    class VirtualMachine
+    {
 
-public:
-    VirtualMachine(KeyBoard& a_keyBoard, Canvas& a_canvas, CodeRerader const& a_code);
+    public:
+        VirtualMachine(KeyBoard &a_keyBoard, Canvas &a_canvas, CodeRerader const &a_code);
 
-    void delay();
-    void beep();
-    void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
-    void execute();
-    void runOpcode(U16Bit a_opCode);
+        void delay();
+        void beep();
+        void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
+        void execute();
+        void runOpcode(U16Bit a_opCode);
 
-private:
-    void loadCharacters();
-    void loadCode(CodeRerader const& a_code);
-    U16Bit readInstruction(U16Bit a_address);
-    auto instructionSetInit();
-    U16Bit normalizeOpcode(U16Bit a_opCode);
+    private:
+        void loadCharacters();
+        void loadCode(CodeRerader const &a_code);
+        U16Bit readInstruction(U16Bit a_address);
+        auto instructionSetInit();
+        U16Bit normalizeOpcode(U16Bit a_opCode);
 
-private:
-    Memory m_memory;
-    CallStack m_stack;
-    Registers m_registers;
-    InstructionSet m_instructionSet;
-    KeyBoard& m_keyBoard;
-    Canvas& m_canvas;
-    U16Bit const m_DELAY_TIME = 100; //msec
-    U16Bit const m_SOUND_FREQUENCY = 15'000; //hz
-    
-};
+    private:
+        Memory m_memory;
+        CallStack m_stack;
+        Registers m_registers;
+        InstructionSet m_instructionSet;
+        KeyBoard &m_keyBoard;
+        Canvas &m_canvas;
+        U16Bit const m_DELAY_TIME = 1;           // msec
+        U16Bit const m_SOUND_FREQUENCY = 15'000; // hz
+    };
 
-}   //namespace chip8
+} // namespace chip8
 
-#endif //VM_HPP
+#endif // VM_HPP
