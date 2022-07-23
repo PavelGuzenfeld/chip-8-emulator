@@ -468,7 +468,9 @@ namespace chip8
     void VirtualMachine::execute()
     {
         auto opCode = readInstruction(m_registers.m_PC);
+#ifndef NDEBUG
         std::cout << "m_PC-> " << m_registers.m_PC << " opCode-> " << std::hex << std::showbase << opCode << "\n";
+#endif
         m_registers.m_PC += 2;
         runOpcode(opCode);
     }

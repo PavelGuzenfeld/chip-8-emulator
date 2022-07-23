@@ -29,9 +29,9 @@ BUILD_LIST = $(BUILD_DIR)/*.o
 LDLIBS 	 = -lSDL2 -lpthread
 
 all:
-	$(foreach SRC_FILE, $(SRC_LIST) ,$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_FILE) -o $(BUILD_DIR)/$(notdir $(SRC_FILE:.cpp=.o));)
-	$(CC) -c $(CPPFLAGS) $(CXXFLAGS) $(MAIN_SRC_PATH) -o $(MAIN_BIN_PATH)
-	$(CXX) -O2 -DNDEBUG $(BUILD_LIST) -o $(BIN_DIR)/$(PROG_NAME) $(LDLIBS) 
+	$(foreach SRC_FILE, $(SRC_LIST) ,$(CC) -DNDEBUG -O2 -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_FILE) -o $(BUILD_DIR)/$(notdir $(SRC_FILE:.cpp=.o));)
+	$(CC) -DNDEBUG -O2 -c  $(CPPFLAGS) $(CXXFLAGS) $(MAIN_SRC_PATH) -o $(MAIN_BIN_PATH)
+	$(CXX) $(BUILD_LIST) -o $(BIN_DIR)/$(PROG_NAME) $(LDLIBS) 
 	$(BIN_DIR)/./$(PROG_NAME)
 
 check:
