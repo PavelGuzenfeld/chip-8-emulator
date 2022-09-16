@@ -12,7 +12,7 @@ TEST_NAME	= utest
 
 BIN_DIR     = ./bin
 BUILD_DIR   = ./build
-INC_DIR		= ./inc
+INC_DIR		= ./inc -I./shared-utils-cpp/inc/
 SRC_DIR     = ./src
 
 MAIN_SRC_PATH = ./src/main/main.cpp

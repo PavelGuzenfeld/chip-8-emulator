@@ -1,4 +1,4 @@
-#include "lib/mu_test.h"
+#include "mu_test.h"
 #include <thread>
 #include <SDL2/SDL.h>
 #include <unistd.h> // sleep()
