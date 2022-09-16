@@ -2,71 +2,69 @@
 #define IO_HPP
 
 #include "settings.hpp"
+#include <memory>
 
 namespace chip8
 {
 
-extern KeysMap const KEY_BOARD;
+    extern KeysMap const KEY_BOARD;
 
-class Screen
-{
-public:
-    Screen(U8Bit a_width, U8Bit a_height, U8Bit a_scale);
-    ~Screen();
+    class Screen
+    {
+    public:
+        Screen(U8Bit a_width, U8Bit a_height, U8Bit a_scale);
 
-    void* internal();
+        auto *internal();
 
-private:
-    void* m_screen;
-};
+    private:
+        std::shared_ptr<void> m_screen;
+    };
 
-class Renderer
-{
-public:
-    Renderer(Screen& a_screen, U8Bit a_scale, Color a_back, Color a_fore);
-    ~Renderer();
+    class Renderer
+    {
+    public:
+        Renderer(Screen &a_screen, U8Bit a_scale, Color a_back, Color a_fore);
+        // ~Renderer();
 
-    void setPixel(U8Bit a_x, U8Bit a_y);
-    void resetPixel(U8Bit a_x, U8Bit a_y);
-    
-    void present();
-    void clear();
-    
-    void beep(U16Bit a_freq, U16Bit a_duration);
+        void setPixel(U8Bit a_x, U8Bit a_y);
+        void resetPixel(U8Bit a_x, U8Bit a_y);
 
-private:
-    void drawPixel(U8Bit a_x, U8Bit a_y);
+        void present();
+        void clear();
 
-private:
-    void* m_renderer;
-    U8Bit m_scale;
-    Color m_back;
-    Color m_fore;
-};
+        void beep(U16Bit a_freq, U16Bit a_duration);
 
-class EventLoop
-{
-public:
-    EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
+    private:
+        void drawPixel(U8Bit a_x, U8Bit a_y);
 
-    void operator()();
+    private:
+        // void *m_renderer;
+        std::shared_ptr<void> m_renderer;
+        U8Bit m_scale;
+        Color m_back;
+        Color m_fore;
+    };
 
-    void exitProgram();
+    class EventLoop
+    {
+    public:
+        EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
 
-private:
-    OnKey m_keyDown;
-    OnKey m_keyUp;
-    bool m_testMode;
+        void operator()();
 
-};
+        void exitProgram();
 
-OnKeyDown waitForKeyPressFactory(OnKey a_keyDown);
+    private:
+        OnKey m_keyDown;
+        OnKey m_keyUp;
+        bool m_testMode;
+    };
 
-void simulateKeyEvent(int a_eventType, int a_key);
-void simulateExit();
+    OnKeyDown waitForKeyPressFactory(OnKey a_keyDown);
 
-}   //namespace chip8
+    void simulateKeyEvent(int a_eventType, int a_key);
+    void simulateExit();
+
+} // namespace chip8
 
 #endif // IO_HPP
-
-//TODO: switch to c++ solution for void*
