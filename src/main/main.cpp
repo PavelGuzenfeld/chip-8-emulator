@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     std::filesystem::path filePath{argv[1]};
     CodeRerader code{filePath};
     Maneger manager{code};
-    manager.mainLoop();
+    manager.runMainLoop();
 
     return 0;
 }

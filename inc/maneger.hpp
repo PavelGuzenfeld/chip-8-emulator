@@ -10,23 +10,22 @@
 namespace chip8
 {
 
-class Maneger
-{
-public:
-    Maneger(CodeRerader const& a_reader);
+    class Maneger
+    {
+    public:
+        Maneger(CodeRerader const &a_reader);
 
-    void mainLoop();
+        void runMainLoop();
 
-private:
-    Screen m_screen;
-    Renderer m_renderer;
-    Canvas m_canvas;
-    KeyBoard m_keyBoard;
-    EventLoop m_loop;
-    VirtualMachine m_vm;
+    private:
+        Screen m_screen;
+        Renderer m_renderer;
+        Canvas m_canvas;
+        KeyBoard m_keyBoard;
+        EventLoop m_loop;
+        VirtualMachine m_vm;
+    };
 
-};
+} // namespace chip8
 
-}   //namespace chip8
-
-#endif //MANEGER_HPP
+#endif // MANEGER_HPP
