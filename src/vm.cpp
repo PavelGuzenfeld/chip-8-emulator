@@ -429,7 +429,7 @@ namespace chip8
         if (m_registers.m_delayTimer > 0)
         {
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(m_DELAY_TIME));
+            std::this_thread::sleep_for(std::chrono::milliseconds(REFRESH_RATE_MS));
             --m_registers.m_delayTimer;
         }
     }
@@ -447,7 +447,7 @@ namespace chip8
         if (m_registers.m_soundTimer > 0)
         {
 #ifdef _WIN32
-            Beep(m_SOUND_FREQUENCY, m_DELAY_TIME);
+            Beep(REFRESH_RATE_MS, SOUND_FREQUENCY);
 #else
             auto t_start = std::chrono::high_resolution_clock::now();
             while (true)
@@ -455,7 +455,10 @@ namespace chip8
                 linuxBeep();
                 auto t_end = std::chrono::high_resolution_clock::now();
                 double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
-                if (elapsed_time_ms > m_DELAY_TIME)
+                if (elapsed_time_ms > REFRESH_RATE_MS)
+                {
+                    break;
+                }
                 {
                     break;
                 }

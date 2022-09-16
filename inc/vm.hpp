@@ -36,8 +36,6 @@ namespace chip8
         InstructionSet m_instructionSet;
         KeyBoard &m_keyBoard;
         Canvas &m_canvas;
-        U16Bit const m_DELAY_TIME = 1;           // msec
-        U16Bit const m_SOUND_FREQUENCY = 15'000; // hz
     };
 
 } // namespace chip8
