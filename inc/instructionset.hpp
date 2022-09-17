@@ -5,24 +5,31 @@
 #include "keyboard.hpp"
 #include "canvas.hpp"
 #include "code_reader.hpp"
-#include "instructionset.hpp"
 
 namespace chip8
 {
+    struct Bus
+    {
+        Memory &m_memory;
+        CallStack &m_stack;
+        Registers &m_registers;
+        KeyBoard &m_keyBoard;
+        Canvas &m_canvas;
+    };
 
-    class VirtualMachine
+    class Instructionset
     {
 
     public:
-        VirtualMachine(KeyBoard &a_keyBoard, Canvas &a_canvas, CodeRerader const &a_code);
+        Instructionset(Bus const &a_bus);
 
         void delay();
         void beep();
+        void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
         void execute();
+        void runOpcode(U16Bit a_opCode);
 
     private:
-        void runOpcode(U16Bit a_opCode);
-        void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
         void loadCharacters();
         void loadCode(CodeRerader const &a_code);
         U16Bit readInstruction(U16Bit a_address);
@@ -30,13 +37,8 @@ namespace chip8
         U16Bit normalizeOpcode(U16Bit a_opCode);
 
     private:
-        Memory m_memory;
-        CallStack m_stack;
-        Registers m_registers;
+        Bus m_bus;
         InstructionSet m_instructionSet;
-        KeyBoard &m_keyBoard;
-        Canvas &m_canvas;
-        Instructionset m_instructionset;
     };
 
 } // namespace chip8
