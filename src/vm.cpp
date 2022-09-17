@@ -4,8 +4,9 @@
 #else
 #include <chrono> // std::chrono
 #include <thread>
-#include <unistd.h> // sleep()
-#include <iostream> // std::cout
+#include <unistd.h>  // sleep()
+#include <iostream>  // std::cout
+#include <exception> // std::exception
 #endif
 #include <algorithm> // copy()
 #include "vm.hpp"
@@ -419,7 +420,7 @@ namespace chip8
     }
 
     VirtualMachine::VirtualMachine(KeyBoard &a_keyBoard, Canvas &a_canvas, CodeRerader const &a_code)
-        : m_memory{CHARS}, m_stack{}, m_registers{}, m_instructionSet{instructionSetInit()}, m_keyBoard{a_keyBoard}, m_canvas{a_canvas}
+        : m_memory{CHARS}, m_stack{}, m_registers{}, m_instructionSet{instructionSetInit()}, m_keyBoard{a_keyBoard}, m_canvas{a_canvas}, m_instructionset{{m_memory, m_stack, m_registers, m_keyBoard, m_canvas}}
     {
         loadCode(a_code);
     }
@@ -428,7 +429,6 @@ namespace chip8
     {
         if (m_registers.m_delayTimer > 0)
         {
-
             std::this_thread::sleep_for(std::chrono::milliseconds(REFRESH_RATE_MS));
             --m_registers.m_delayTimer;
         }
@@ -436,10 +436,16 @@ namespace chip8
 
     static void linuxBeep()
     {
-        // system("echo -e \"\007\" >/dev/tty10");
-        std::cout << "\a"
-                  << "second\n"
-                  << std::flush;
+        try
+        {
+            system("echo -e \"\007\" >/dev/tty10");
+        }
+        catch (std::exception const &)
+        {
+            std::cout << "\a"
+                      << "second\n"
+                      << std::flush;
+        }
     }
 
     void VirtualMachine::beep()
