@@ -459,9 +459,6 @@ namespace chip8
                 {
                     break;
                 }
-                {
-                    break;
-                }
             }
 #endif
             --m_registers.m_soundTimer;
