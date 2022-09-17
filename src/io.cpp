@@ -29,7 +29,7 @@ namespace chip8
     {
         SDL_Init(SDL_INIT_EVERYTHING);
         return SDL_CreateWindow(
-            "Chip8 Window",
+            TITLE.c_str(),
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             width, height, SDL_WINDOW_SHOWN);
@@ -59,11 +59,6 @@ namespace chip8
     {
         clear();
     }
-
-    // Renderer::~Renderer()
-    // {
-    //     SDL_DestroyRenderer(static_cast<SDL_Renderer *>(m_renderer));
-    // }
 
     void Renderer::setPixel(U8Bit a_x, U8Bit a_y)
     {
