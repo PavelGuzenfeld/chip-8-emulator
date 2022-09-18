@@ -21,12 +21,9 @@ namespace chip8
         void execute();
 
     private:
-        void runOpcode(U16Bit a_opCode);
         void drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines);
         void loadCharacters();
         void loadCode(CodeRerader const &a_code);
-        U16Bit readInstruction(U16Bit a_address);
-        auto instructionSetInit();
         U16Bit normalizeOpcode(U16Bit a_opCode);
 
     private:

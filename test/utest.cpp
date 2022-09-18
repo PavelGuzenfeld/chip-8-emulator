@@ -267,427 +267,427 @@ BEGIN_TEST(print_sprites)
 }
 END_TEST
 
-BEGIN_TEST(display_opcodes)
-{
-    using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
-    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
-    auto keyBoard = KeyBoard(KEY_BOARD);
-    auto code = CodeRerader{"./test/test.bin"};
-    auto vm = VirtualMachine{keyBoard, canvas, code};
+// BEGIN_TEST(display_opcodes)
+// {
+//     using namespace chip8;
+//     auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+//     auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+//     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+//     auto keyBoard = KeyBoard(KEY_BOARD);
+//     auto code = CodeRerader{"./test/test.bin"};
+//     auto vm = VirtualMachine{keyBoard, canvas, code};
 
-    // 0xdfff opcode
-    auto const OPCODE = 0xdab5;
-    {
-        vm.m_registers.m_vx[0xa] = 0;
-        vm.m_registers.m_vx[0xb] = 0;
-        vm.m_registers.m_index = 0;
-        for (auto i = 0x0; i < 0xa; ++i)
-        {
-            vm.runOpcode(OPCODE);
-            vm.m_registers.m_index += 5;
-            vm.m_registers.m_vx[0xa] += 5;
-            ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-        }
-        vm.m_registers.m_vx[0xb] = 10;
-        for (auto i = 0xa; i < 0x10; ++i)
-        {
-            vm.runOpcode(OPCODE);
-            vm.m_registers.m_index += 5;
-            vm.m_registers.m_vx[0xa] += 5;
-            ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-        }
-    }
-    {
-        vm.m_registers.m_vx[0xa] = 0;
-        vm.m_registers.m_vx[0xb] = 0;
-        vm.m_registers.m_index = 0;
-        for (auto i = 0x0; i < 0xa; ++i)
-        {
-            vm.runOpcode(OPCODE);
-            vm.m_registers.m_index += 5;
-            vm.m_registers.m_vx[0xa] += 5;
-            ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-        }
-        vm.m_registers.m_vx[0xb] = 10;
-        for (auto i = 0xa; i < 0x10; ++i)
-        {
-            vm.runOpcode(OPCODE);
-            vm.m_registers.m_index += 5;
-            vm.m_registers.m_vx[0xa] += 5;
-            ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-        }
-    }
-}
-END_TEST
+//     // 0xdfff opcode
+//     auto const OPCODE = 0xdab5;
+//     {
+//         vm.m_registers.m_vx[0xa] = 0;
+//         vm.m_registers.m_vx[0xb] = 0;
+//         vm.m_registers.m_index = 0;
+//         for (auto i = 0x0; i < 0xa; ++i)
+//         {
+//             vm.runOpcode(OPCODE);
+//             vm.m_registers.m_index += 5;
+//             vm.m_registers.m_vx[0xa] += 5;
+//             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//         }
+//         vm.m_registers.m_vx[0xb] = 10;
+//         for (auto i = 0xa; i < 0x10; ++i)
+//         {
+//             vm.runOpcode(OPCODE);
+//             vm.m_registers.m_index += 5;
+//             vm.m_registers.m_vx[0xa] += 5;
+//             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//         }
+//     }
+//     {
+//         vm.m_registers.m_vx[0xa] = 0;
+//         vm.m_registers.m_vx[0xb] = 0;
+//         vm.m_registers.m_index = 0;
+//         for (auto i = 0x0; i < 0xa; ++i)
+//         {
+//             vm.runOpcode(OPCODE);
+//             vm.m_registers.m_index += 5;
+//             vm.m_registers.m_vx[0xa] += 5;
+//             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//         }
+//         vm.m_registers.m_vx[0xb] = 10;
+//         for (auto i = 0xa; i < 0x10; ++i)
+//         {
+//             vm.runOpcode(OPCODE);
+//             vm.m_registers.m_index += 5;
+//             vm.m_registers.m_vx[0xa] += 5;
+//             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//         }
+//     }
+// }
+// END_TEST
 
-BEGIN_TEST(opCode_execution)
-{
-    using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
-    auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
-    auto keyBoard = KeyBoard(KEY_BOARD);
-    auto code = CodeRerader{"./test/test.bin"};
-    auto vm = VirtualMachine{keyBoard, canvas, code};
-    {
-        // 0x00ee
-        vm.m_stack.push(0xaa);
-        vm.runOpcode(0x00ee);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0xaa);
-    }
+// BEGIN_TEST(opCode_execution)
+// {
+//     using namespace chip8;
+//     auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
+//     auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+//     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
+//     auto keyBoard = KeyBoard(KEY_BOARD);
+//     auto code = CodeRerader{"./test/test.bin"};
+//     auto vm = VirtualMachine{keyBoard, canvas, code};
+//     {
+//         // 0x00ee
+//         vm.m_stack.push(0xaa);
+//         vm.runOpcode(0x00ee);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0xaa);
+//     }
 
-    {
-        // ox1nnn
-        vm.runOpcode(0x1aaa);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0xaaa);
-    }
+//     {
+//         // ox1nnn
+//         vm.runOpcode(0x1aaa);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0xaaa);
+//     }
 
-    {
-        // 0x2nnn
-        vm.m_registers.m_PC = 0xaaa;
-        vm.runOpcode(0x2bbb);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0xbbb);
-        ASSERT_EQUAL(vm.m_stack.pop(), 0xaaa);
-    }
+//     {
+//         // 0x2nnn
+//         vm.m_registers.m_PC = 0xaaa;
+//         vm.runOpcode(0x2bbb);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0xbbb);
+//         ASSERT_EQUAL(vm.m_stack.pop(), 0xaaa);
+//     }
 
-    {
-        // 0X3xnn
-        vm.m_registers.m_PC = 0;
-        vm.m_registers.m_vx[0xa] = 0xbb;
-        vm.runOpcode(0x3abb);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 2);
-    }
+//     {
+//         // 0X3xnn
+//         vm.m_registers.m_PC = 0;
+//         vm.m_registers.m_vx[0xa] = 0xbb;
+//         vm.runOpcode(0x3abb);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 2);
+//     }
 
-    {
-        // 0x4xnn
-        vm.m_registers.m_PC = 0;
-        vm.m_registers.m_vx[0xa] = 0xbb;
-        vm.runOpcode(0x4abb);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0);
-    }
+//     {
+//         // 0x4xnn
+//         vm.m_registers.m_PC = 0;
+//         vm.m_registers.m_vx[0xa] = 0xbb;
+//         vm.runOpcode(0x4abb);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0);
+//     }
 
-    {
-        // 0x5xy0
-        vm.m_registers.m_PC = 0;
-        vm.m_registers.m_vx[0xa] = 0xbb;
-        vm.m_registers.m_vx[0xb] = 0xbb;
-        vm.runOpcode(0x5ab0);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 2);
-    }
+//     {
+//         // 0x5xy0
+//         vm.m_registers.m_PC = 0;
+//         vm.m_registers.m_vx[0xa] = 0xbb;
+//         vm.m_registers.m_vx[0xb] = 0xbb;
+//         vm.runOpcode(0x5ab0);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 2);
+//     }
 
-    {
-        // 0x6xnn
-        vm.runOpcode(0x6abb);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbb);
-    }
+//     {
+//         // 0x6xnn
+//         vm.runOpcode(0x6abb);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbb);
+//     }
 
-    {
-        // 0x7xnn
-        vm.m_registers.m_vx[0xa] = 0x1;
-        vm.runOpcode(0x7abb);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbc);
-    }
+//     {
+//         // 0x7xnn
+//         vm.m_registers.m_vx[0xa] = 0x1;
+//         vm.runOpcode(0x7abb);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbc);
+//     }
 
-    {
-        // 0x8xy0
-        vm.m_registers.m_vx[0xa] = 0x1;
-        vm.m_registers.m_vx[0xb] = 0x55;
-        vm.runOpcode(0x8ab0);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x55);
-    }
+//     {
+//         // 0x8xy0
+//         vm.m_registers.m_vx[0xa] = 0x1;
+//         vm.m_registers.m_vx[0xb] = 0x55;
+//         vm.runOpcode(0x8ab0);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x55);
+//     }
 
-    {
-        // 0x8xy1
-        vm.m_registers.m_vx[0xa] = 0x0;
-        vm.m_registers.m_vx[0xb] = 0x1;
-        vm.runOpcode(0x8ab1);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x1);
-    }
+//     {
+//         // 0x8xy1
+//         vm.m_registers.m_vx[0xa] = 0x0;
+//         vm.m_registers.m_vx[0xb] = 0x1;
+//         vm.runOpcode(0x8ab1);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x1);
+//     }
 
-    {
-        // 0x8xy2
-        vm.m_registers.m_vx[0xa] = 0x0f;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.runOpcode(0x8ab2);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x03);
-    }
+//     {
+//         // 0x8xy2
+//         vm.m_registers.m_vx[0xa] = 0x0f;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.runOpcode(0x8ab2);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x03);
+//     }
 
-    {
-        // 0x8xy3
-        vm.m_registers.m_vx[0xa] = 0x0f;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.runOpcode(0x8ab3);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x0c);
-    }
+//     {
+//         // 0x8xy3
+//         vm.m_registers.m_vx[0xa] = 0x0f;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.runOpcode(0x8ab3);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x0c);
+//     }
 
-    {
-        // 0x8xy4
-        vm.m_registers.m_vx[0xa] = 0xff;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab4);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0xff + 0x03));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-    }
+//     {
+//         // 0x8xy4
+//         vm.m_registers.m_vx[0xa] = 0xff;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab4);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0xff + 0x03));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//     }
 
-    {
-        // 0x8xy4
-        vm.m_registers.m_vx[0xa] = 0x04;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab4);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 + 0x03));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x8xy4
+//         vm.m_registers.m_vx[0xa] = 0x04;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab4);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 + 0x03));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0x8xy5
-        vm.m_registers.m_vx[0xa] = 0x04;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab5);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x8xy5
+//         vm.m_registers.m_vx[0xa] = 0x04;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab5);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0x8xy5
-        vm.m_registers.m_vx[0xa] = 0x03;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab5);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-    }
+//     {
+//         // 0x8xy5
+//         vm.m_registers.m_vx[0xa] = 0x03;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab5);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//     }
 
-    {
-        // 0x8xy6
-        vm.m_registers.m_vx[0xa] = 0x03;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab6);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 >> 1));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-    }
+//     {
+//         // 0x8xy6
+//         vm.m_registers.m_vx[0xa] = 0x03;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab6);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 >> 1));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//     }
 
-    {
-        // 0x8xy6
-        vm.m_registers.m_vx[0xa] = 0x02;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab6);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 >> 1));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x8xy6
+//         vm.m_registers.m_vx[0xa] = 0x02;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab6);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 >> 1));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0x8xy7
-        vm.m_registers.m_vx[0xa] = 0x03;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab7);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-    }
+//     {
+//         // 0x8xy7
+//         vm.m_registers.m_vx[0xa] = 0x03;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab7);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//     }
 
-    {
-        // 0x8xy7
-        vm.m_registers.m_vx[0xa] = 0x04;
-        vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8ab7);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x8xy7
+//         vm.m_registers.m_vx[0xa] = 0x04;
+//         vm.m_registers.m_vx[0xb] = 0x03;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8ab7);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0x8xyE
-        vm.m_registers.m_vx[0xa] = 0x0ff;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8abe);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x0ff << 1));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
-    }
+//     {
+//         // 0x8xyE
+//         vm.m_registers.m_vx[0xa] = 0x0ff;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8abe);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x0ff << 1));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
+//     }
 
-    {
-        // 0x8xyE
-        vm.m_registers.m_vx[0xa] = 0x02;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x8abe);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 << 1));
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x8xyE
+//         vm.m_registers.m_vx[0xa] = 0x02;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x8abe);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 << 1));
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0x9xy0
-        vm.m_registers.m_vx[0xa] = 0x02;
-        vm.m_registers.m_vx[0xb] = 0x04;
-        vm.m_registers.m_vx[0xf] = 0;
-        vm.runOpcode(0x9ab0);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
-    }
+//     {
+//         // 0x9xy0
+//         vm.m_registers.m_vx[0xa] = 0x02;
+//         vm.m_registers.m_vx[0xb] = 0x04;
+//         vm.m_registers.m_vx[0xf] = 0;
+//         vm.runOpcode(0x9ab0);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
+//     }
 
-    {
-        // 0xafff
-        vm.m_registers.m_index = 0;
-        vm.runOpcode(0xaaaa);
-        ASSERT_EQUAL(vm.m_registers.m_index, 0xaaa);
-    }
+//     {
+//         // 0xafff
+//         vm.m_registers.m_index = 0;
+//         vm.runOpcode(0xaaaa);
+//         ASSERT_EQUAL(vm.m_registers.m_index, 0xaaa);
+//     }
 
-    {
-        // 0xbfff
-        vm.m_registers.m_vx[0] = 5;
-        vm.runOpcode(0xbaaa);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 5 + 0xaaa);
-    }
+//     {
+//         // 0xbfff
+//         vm.m_registers.m_vx[0] = 5;
+//         vm.runOpcode(0xbaaa);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 5 + 0xaaa);
+//     }
 
-    {
-        // 0xcfff
-        auto sum = 0;
-        for (auto i = 0; i < 10000; ++i)
-        {
-            vm.runOpcode(0xcfff);
-            sum += vm.m_registers.m_vx[0xf];
-        }
-        ASSERT_EQUAL(static_cast<int>(sum / 10000), int(255 / 2));
-    }
+//     {
+//         // 0xcfff
+//         auto sum = 0;
+//         for (auto i = 0; i < 10000; ++i)
+//         {
+//             vm.runOpcode(0xcfff);
+//             sum += vm.m_registers.m_vx[0xf];
+//         }
+//         ASSERT_EQUAL(static_cast<int>(sum / 10000), int(255 / 2));
+//     }
 
-    {
-        // 0xex9e
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.m_registers.m_PC = 0x200;
-        keyBoard.keyDown(SDLK_2);
-        vm.runOpcode(0xe09e);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
-    }
+//     {
+//         // 0xex9e
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.m_registers.m_PC = 0x200;
+//         keyBoard.keyDown(SDLK_2);
+//         vm.runOpcode(0xe09e);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
+//     }
 
-    {
-        // 0xex9e
-        vm.m_registers.m_vx[0] = 0x02;
-        vm.m_registers.m_PC = 0x200;
-        keyBoard.keyDown(SDLK_2);
-        vm.runOpcode(0xe09e);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
-    }
+//     {
+//         // 0xex9e
+//         vm.m_registers.m_vx[0] = 0x02;
+//         vm.m_registers.m_PC = 0x200;
+//         keyBoard.keyDown(SDLK_2);
+//         vm.runOpcode(0xe09e);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
+//     }
 
-    {
-        // 0xexa1
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.m_registers.m_PC = 0x200;
-        keyBoard.keyDown(SDLK_2);
-        vm.runOpcode(0xe0a1);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
-    }
+//     {
+//         // 0xexa1
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.m_registers.m_PC = 0x200;
+//         keyBoard.keyDown(SDLK_2);
+//         vm.runOpcode(0xe0a1);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
+//     }
 
-    {
-        // 0xexa1
-        vm.m_registers.m_vx[0] = 0x02;
-        vm.m_registers.m_PC = 0x200;
-        keyBoard.keyDown(SDLK_2);
-        vm.runOpcode(0xe0a1);
-        ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
-    }
+//     {
+//         // 0xexa1
+//         vm.m_registers.m_vx[0] = 0x02;
+//         vm.m_registers.m_PC = 0x200;
+//         keyBoard.keyDown(SDLK_2);
+//         vm.runOpcode(0xe0a1);
+//         ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
+//     }
 
-    {
-        // 0xfx07
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.m_registers.m_delayTimer = 0x02;
-        vm.runOpcode(0xf007);
-        ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
-    }
+//     {
+//         // 0xfx07
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.m_registers.m_delayTimer = 0x02;
+//         vm.runOpcode(0xf007);
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
+//     }
 
-    {
-        // 0xfx0a
-        vm.m_registers.m_vx[0] = 0x01;
-        auto job = [&]()
-        { vm.runOpcode(0xf00a); };
-        auto worker = std::thread(job);
-        simulateKeyEvent(SDL_KEYDOWN, SDLK_2);
-        worker.join();
-        ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
-    }
+//     {
+//         // 0xfx0a
+//         vm.m_registers.m_vx[0] = 0x01;
+//         auto job = [&]()
+//         { vm.runOpcode(0xf00a); };
+//         auto worker = std::thread(job);
+//         simulateKeyEvent(SDL_KEYDOWN, SDLK_2);
+//         worker.join();
+//         ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
+//     }
 
-    {
-        // 0xfx15
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.runOpcode(0xf015);
-        ASSERT_EQUAL(vm.m_registers.m_delayTimer, 0x01);
-    }
+//     {
+//         // 0xfx15
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.runOpcode(0xf015);
+//         ASSERT_EQUAL(vm.m_registers.m_delayTimer, 0x01);
+//     }
 
-    {
-        // 0xfx18
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.runOpcode(0xf018);
-        ASSERT_EQUAL(vm.m_registers.m_soundTimer, 0x01);
-    }
+//     {
+//         // 0xfx18
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.runOpcode(0xf018);
+//         ASSERT_EQUAL(vm.m_registers.m_soundTimer, 0x01);
+//     }
 
-    {
-        // 0xfx1e
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.m_registers.m_index = 0x02;
-        vm.runOpcode(0xf01e);
-        ASSERT_EQUAL(vm.m_registers.m_index, 0x03);
-    }
+//     {
+//         // 0xfx1e
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.m_registers.m_index = 0x02;
+//         vm.runOpcode(0xf01e);
+//         ASSERT_EQUAL(vm.m_registers.m_index, 0x03);
+//     }
 
-    {
-        // 0xfx29
-        vm.m_registers.m_vx[0] = 0x01;
-        vm.runOpcode(0xf029);
-        ASSERT_EQUAL(vm.m_registers.m_index, 0x01 * 5);
-    }
+//     {
+//         // 0xfx29
+//         vm.m_registers.m_vx[0] = 0x01;
+//         vm.runOpcode(0xf029);
+//         ASSERT_EQUAL(vm.m_registers.m_index, 0x01 * 5);
+//     }
 
-    {
-        // 0xfx33
-        vm.m_registers.m_vx[0] = 123;
-        vm.runOpcode(0xf033);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 1);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 2);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 3);
-    }
+//     {
+//         // 0xfx33
+//         vm.m_registers.m_vx[0] = 123;
+//         vm.runOpcode(0xf033);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 1);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 2);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 3);
+//     }
 
-    {
-        // 0xfx33
-        // case vx = 0x0
-        vm.m_registers.m_vx[0] = 0;
-        vm.runOpcode(0xf033);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 0);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 0);
-        ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 0);
-    }
+//     {
+//         // 0xfx33
+//         // case vx = 0x0
+//         vm.m_registers.m_vx[0] = 0;
+//         vm.runOpcode(0xf033);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 0);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 0);
+//         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 0);
+//     }
 
-    {
-        // 0xfx55
-        for (auto i = 30; i < 5; ++i)
-        {
-            vm.m_registers.m_vx[i] = i;
-        }
-        vm.m_registers.m_index = 0x200;
-        vm.runOpcode(0xf555);
-        for (auto i = 30; i < 5; ++i)
-        {
-            ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + i], i);
-        }
-    }
+//     {
+//         // 0xfx55
+//         for (auto i = 30; i < 5; ++i)
+//         {
+//             vm.m_registers.m_vx[i] = i;
+//         }
+//         vm.m_registers.m_index = 0x200;
+//         vm.runOpcode(0xf555);
+//         for (auto i = 30; i < 5; ++i)
+//         {
+//             ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + i], i);
+//         }
+//     }
 
-    {
-        // 0xfx65
-        vm.m_registers.m_index = 0x200;
-        for (auto i = 50; i < 5; ++i)
-        {
-            vm.m_memory[vm.m_registers.m_index + i] = i;
-        }
-        vm.runOpcode(0xf565);
-        for (auto i = 50; i < 5; ++i)
-        {
-            ASSERT_EQUAL(vm.m_registers.m_vx[i], i);
-        }
-    }
-}
-END_TEST
+//     {
+//         // 0xfx65
+//         vm.m_registers.m_index = 0x200;
+//         for (auto i = 50; i < 5; ++i)
+//         {
+//             vm.m_memory[vm.m_registers.m_index + i] = i;
+//         }
+//         vm.runOpcode(0xf565);
+//         for (auto i = 50; i < 5; ++i)
+//         {
+//             ASSERT_EQUAL(vm.m_registers.m_vx[i], i);
+//         }
+//     }
+// }
+// END_TEST
 
 BEGIN_TEST(maneger_initialize)
 {
@@ -728,8 +728,8 @@ TEST(canvas)
 TEST(event_loop)
 TEST(code_reader)
 TEST(print_sprites)
-TEST(display_opcodes)
-TEST(opCode_execution)
+// TEST(display_opcodes)
+// TEST(opCode_execution)
 TEST(maneger_initialize)
 TEST(runtime)
 END_SUITE
