@@ -1,5 +1,4 @@
-#ifndef MANEGER_HPP
-#define MANEGER_HPP
+#pragma once
 
 #include "settings.hpp"
 #include "io.hpp"
@@ -10,10 +9,10 @@
 namespace chip8
 {
 
-    class Maneger
+    class MainLoopRunner
     {
     public:
-        Maneger(CodeRerader const &a_reader);
+        MainLoopRunner(CodeRerader const &a_reader);
 
         void runMainLoop();
 
@@ -27,5 +26,3 @@ namespace chip8
     };
 
 } // namespace chip8
-
-#endif // MANEGER_HPP

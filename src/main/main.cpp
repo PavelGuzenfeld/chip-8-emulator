@@ -1,6 +1,6 @@
 #include <iostream>
 #include "code_reader.hpp"
-#include "maneger.hpp"
+#include "main_loop_runner.hpp"
 
 int main(int argc, char **argv)
 {
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     using namespace chip8;
     std::filesystem::path filePath{argv[1]};
     CodeRerader code{filePath};
-    Maneger manager{code};
+    MainLoopRunner manager{code};
     manager.runMainLoop();
 
     return 0;

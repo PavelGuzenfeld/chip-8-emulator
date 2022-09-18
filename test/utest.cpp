@@ -693,7 +693,7 @@ BEGIN_TEST(maneger_initialize)
 {
     using namespace chip8;
     auto code = CodeRerader{"./test/code_reader_test.file"};
-    auto m = Maneger{code};
+    auto m = MainLoopRunner{code};
     ASSERT_PASS();
 }
 END_TEST
