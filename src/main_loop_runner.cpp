@@ -1,4 +1,4 @@
-#include "maneger.hpp"
+#include "main_loop_runner.hpp"
 
 namespace chip8
 {

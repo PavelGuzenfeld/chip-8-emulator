@@ -10,7 +10,7 @@
 #include "io.hpp"
 #include "vm.hpp"
 #include "canvas.hpp"
-#include "maneger.hpp"
+#include "main_loop_runner.hpp"
 #include "code_reader.hpp"
 
 BEGIN_TEST(memory)

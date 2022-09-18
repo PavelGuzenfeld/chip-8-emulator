@@ -41,6 +41,6 @@ check:
 	$(BIN_DIR)/$(TEST_NAME) -v
 
 clean:
-	rm -f $(BIN_DIR)/$(PROG_NAME) $(BUILD_DIR)/*.o
+	rm -f $(BIN_DIR)/$(PROG_NAME) $(BUILD_DIR)/*.o $(BIN_DIR)/$(TEST_NAME)
 
 .PHONY: prod test all clean $(PROG_NAME) compile main
