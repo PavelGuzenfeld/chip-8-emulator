@@ -254,14 +254,14 @@ BEGIN_TEST(print_sprites)
     auto x = 0;
     for (U8Bit i = 0; i < 0x10; i += 4)
     {
-        vm.drawSprite(x, 0, i, 5);
+        vm.m_instructionset.drawSprite(x, 0, i, 5);
         x += 5;
         sleep(1);
     }
 
     for (U8Bit i = 0; i < 0x10; ++i)
     {
-        vm.drawSprite(61, 31, i, 5);
+        vm.m_instructionset.drawSprite(61, 31, i, 5);
     }
     ASSERT_PASS();
 }
@@ -285,7 +285,7 @@ BEGIN_TEST(display_opcodes)
         vm.m_registers.m_index = 0;
         for (auto i = 0x0; i < 0xa; ++i)
         {
-            vm.m_instructionset.runOpcode(OPCODE);
+            vm.m_instructionset.runInstraction(OPCODE);
             vm.m_registers.m_index += 5;
             vm.m_registers.m_vx[0xa] += 5;
             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
@@ -293,7 +293,7 @@ BEGIN_TEST(display_opcodes)
         vm.m_registers.m_vx[0xb] = 10;
         for (auto i = 0xa; i < 0x10; ++i)
         {
-            vm.m_instructionset.runOpcode(OPCODE);
+            vm.m_instructionset.runInstraction(OPCODE);
             vm.m_registers.m_index += 5;
             vm.m_registers.m_vx[0xa] += 5;
             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
@@ -305,7 +305,7 @@ BEGIN_TEST(display_opcodes)
         vm.m_registers.m_index = 0;
         for (auto i = 0x0; i < 0xa; ++i)
         {
-            vm.m_instructionset.runOpcode(OPCODE);
+            vm.m_instructionset.runInstraction(OPCODE);
             vm.m_registers.m_index += 5;
             vm.m_registers.m_vx[0xa] += 5;
             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
@@ -313,7 +313,7 @@ BEGIN_TEST(display_opcodes)
         vm.m_registers.m_vx[0xb] = 10;
         for (auto i = 0xa; i < 0x10; ++i)
         {
-            vm.m_instructionset.runOpcode(OPCODE);
+            vm.m_instructionset.runInstraction(OPCODE);
             vm.m_registers.m_index += 5;
             vm.m_registers.m_vx[0xa] += 5;
             ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
@@ -334,20 +334,20 @@ BEGIN_TEST(opCode_execution)
     {
         // 0x00ee
         vm.m_stack.push(0xaa);
-        vm.m_instructionset.runOpcode(0x00ee);
+        vm.m_instructionset.runInstraction(0x00ee);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0xaa);
     }
 
     {
         // ox1nnn
-        vm.m_instructionset.runOpcode(0x1aaa);
+        vm.m_instructionset.runInstraction(0x1aaa);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0xaaa);
     }
 
     {
         // 0x2nnn
         vm.m_registers.m_PC = 0xaaa;
-        vm.m_instructionset.runOpcode(0x2bbb);
+        vm.m_instructionset.runInstraction(0x2bbb);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0xbbb);
         ASSERT_EQUAL(vm.m_stack.pop(), 0xaaa);
     }
@@ -356,7 +356,7 @@ BEGIN_TEST(opCode_execution)
         // 0X3xnn
         vm.m_registers.m_PC = 0;
         vm.m_registers.m_vx[0xa] = 0xbb;
-        vm.m_instructionset.runOpcode(0x3abb);
+        vm.m_instructionset.runInstraction(0x3abb);
         ASSERT_EQUAL(vm.m_registers.m_PC, 2);
     }
 
@@ -364,7 +364,7 @@ BEGIN_TEST(opCode_execution)
         // 0x4xnn
         vm.m_registers.m_PC = 0;
         vm.m_registers.m_vx[0xa] = 0xbb;
-        vm.m_instructionset.runOpcode(0x4abb);
+        vm.m_instructionset.runInstraction(0x4abb);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0);
     }
 
@@ -373,20 +373,20 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_PC = 0;
         vm.m_registers.m_vx[0xa] = 0xbb;
         vm.m_registers.m_vx[0xb] = 0xbb;
-        vm.m_instructionset.runOpcode(0x5ab0);
+        vm.m_instructionset.runInstraction(0x5ab0);
         ASSERT_EQUAL(vm.m_registers.m_PC, 2);
     }
 
     {
         // 0x6xnn
-        vm.m_instructionset.runOpcode(0x6abb);
+        vm.m_instructionset.runInstraction(0x6abb);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbb);
     }
 
     {
         // 0x7xnn
         vm.m_registers.m_vx[0xa] = 0x1;
-        vm.m_instructionset.runOpcode(0x7abb);
+        vm.m_instructionset.runInstraction(0x7abb);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0xbc);
     }
 
@@ -394,7 +394,7 @@ BEGIN_TEST(opCode_execution)
         // 0x8xy0
         vm.m_registers.m_vx[0xa] = 0x1;
         vm.m_registers.m_vx[0xb] = 0x55;
-        vm.m_instructionset.runOpcode(0x8ab0);
+        vm.m_instructionset.runInstraction(0x8ab0);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x55);
     }
 
@@ -402,7 +402,7 @@ BEGIN_TEST(opCode_execution)
         // 0x8xy1
         vm.m_registers.m_vx[0xa] = 0x0;
         vm.m_registers.m_vx[0xb] = 0x1;
-        vm.m_instructionset.runOpcode(0x8ab1);
+        vm.m_instructionset.runInstraction(0x8ab1);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x1);
     }
 
@@ -410,7 +410,7 @@ BEGIN_TEST(opCode_execution)
         // 0x8xy2
         vm.m_registers.m_vx[0xa] = 0x0f;
         vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_instructionset.runOpcode(0x8ab2);
+        vm.m_instructionset.runInstraction(0x8ab2);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x03);
     }
 
@@ -418,7 +418,7 @@ BEGIN_TEST(opCode_execution)
         // 0x8xy3
         vm.m_registers.m_vx[0xa] = 0x0f;
         vm.m_registers.m_vx[0xb] = 0x03;
-        vm.m_instructionset.runOpcode(0x8ab3);
+        vm.m_instructionset.runInstraction(0x8ab3);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], 0x0c);
     }
 
@@ -427,7 +427,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0xff;
         vm.m_registers.m_vx[0xb] = 0x03;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab4);
+        vm.m_instructionset.runInstraction(0x8ab4);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0xff + 0x03));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
     }
@@ -437,7 +437,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x04;
         vm.m_registers.m_vx[0xb] = 0x03;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab4);
+        vm.m_instructionset.runInstraction(0x8ab4);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 + 0x03));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
@@ -447,7 +447,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x04;
         vm.m_registers.m_vx[0xb] = 0x03;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab5);
+        vm.m_instructionset.runInstraction(0x8ab5);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
@@ -457,7 +457,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x03;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab5);
+        vm.m_instructionset.runInstraction(0x8ab5);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
     }
@@ -467,7 +467,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x03;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab6);
+        vm.m_instructionset.runInstraction(0x8ab6);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 >> 1));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
     }
@@ -477,7 +477,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x02;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab6);
+        vm.m_instructionset.runInstraction(0x8ab6);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 >> 1));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
@@ -487,7 +487,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x03;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab7);
+        vm.m_instructionset.runInstraction(0x8ab7);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x04 - 0x03));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
     }
@@ -497,7 +497,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x04;
         vm.m_registers.m_vx[0xb] = 0x03;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8ab7);
+        vm.m_instructionset.runInstraction(0x8ab7);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x03 - 0x04));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
@@ -507,7 +507,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x0ff;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8abe);
+        vm.m_instructionset.runInstraction(0x8abe);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x0ff << 1));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 1);
     }
@@ -517,7 +517,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x02;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x8abe);
+        vm.m_instructionset.runInstraction(0x8abe);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xa], static_cast<U8Bit>(0x02 << 1));
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
@@ -527,21 +527,21 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0xa] = 0x02;
         vm.m_registers.m_vx[0xb] = 0x04;
         vm.m_registers.m_vx[0xf] = 0;
-        vm.m_instructionset.runOpcode(0x9ab0);
+        vm.m_instructionset.runInstraction(0x9ab0);
         ASSERT_EQUAL(vm.m_registers.m_vx[0xf], 0);
     }
 
     {
         // 0xafff
         vm.m_registers.m_index = 0;
-        vm.m_instructionset.runOpcode(0xaaaa);
+        vm.m_instructionset.runInstraction(0xaaaa);
         ASSERT_EQUAL(vm.m_registers.m_index, 0xaaa);
     }
 
     {
         // 0xbfff
         vm.m_registers.m_vx[0] = 5;
-        vm.m_instructionset.runOpcode(0xbaaa);
+        vm.m_instructionset.runInstraction(0xbaaa);
         ASSERT_EQUAL(vm.m_registers.m_PC, 5 + 0xaaa);
     }
 
@@ -550,7 +550,7 @@ BEGIN_TEST(opCode_execution)
         auto sum = 0;
         for (auto i = 0; i < 10000; ++i)
         {
-            vm.m_instructionset.runOpcode(0xcfff);
+            vm.m_instructionset.runInstraction(0xcfff);
             sum += vm.m_registers.m_vx[0xf];
         }
         ASSERT_EQUAL(static_cast<int>(sum / 10000), int(255 / 2));
@@ -561,7 +561,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0] = 0x01;
         vm.m_registers.m_PC = 0x200;
         keyBoard.keyDown(SDLK_2);
-        vm.m_instructionset.runOpcode(0xe09e);
+        vm.m_instructionset.runInstraction(0xe09e);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
     }
 
@@ -570,7 +570,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0] = 0x02;
         vm.m_registers.m_PC = 0x200;
         keyBoard.keyDown(SDLK_2);
-        vm.m_instructionset.runOpcode(0xe09e);
+        vm.m_instructionset.runInstraction(0xe09e);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
     }
 
@@ -579,7 +579,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0] = 0x01;
         vm.m_registers.m_PC = 0x200;
         keyBoard.keyDown(SDLK_2);
-        vm.m_instructionset.runOpcode(0xe0a1);
+        vm.m_instructionset.runInstraction(0xe0a1);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0x202);
     }
 
@@ -588,7 +588,7 @@ BEGIN_TEST(opCode_execution)
         vm.m_registers.m_vx[0] = 0x02;
         vm.m_registers.m_PC = 0x200;
         keyBoard.keyDown(SDLK_2);
-        vm.m_instructionset.runOpcode(0xe0a1);
+        vm.m_instructionset.runInstraction(0xe0a1);
         ASSERT_EQUAL(vm.m_registers.m_PC, 0x200);
     }
 
@@ -596,7 +596,7 @@ BEGIN_TEST(opCode_execution)
         // 0xfx07
         vm.m_registers.m_vx[0] = 0x01;
         vm.m_registers.m_delayTimer = 0x02;
-        vm.m_instructionset.runOpcode(0xf007);
+        vm.m_instructionset.runInstraction(0xf007);
         ASSERT_EQUAL(vm.m_registers.m_vx[0], 0x02);
     }
 
@@ -604,7 +604,7 @@ BEGIN_TEST(opCode_execution)
         // 0xfx0a
         vm.m_registers.m_vx[0] = 0x01;
         auto job = [&]()
-        { vm.m_instructionset.runOpcode(0xf00a); };
+        { vm.m_instructionset.runInstraction(0xf00a); };
         auto worker = std::thread(job);
         simulateKeyEvent(SDL_KEYDOWN, SDLK_2);
         worker.join();
@@ -614,14 +614,14 @@ BEGIN_TEST(opCode_execution)
     {
         // 0xfx15
         vm.m_registers.m_vx[0] = 0x01;
-        vm.m_instructionset.runOpcode(0xf015);
+        vm.m_instructionset.runInstraction(0xf015);
         ASSERT_EQUAL(vm.m_registers.m_delayTimer, 0x01);
     }
 
     {
         // 0xfx18
         vm.m_registers.m_vx[0] = 0x01;
-        vm.m_instructionset.runOpcode(0xf018);
+        vm.m_instructionset.runInstraction(0xf018);
         ASSERT_EQUAL(vm.m_registers.m_soundTimer, 0x01);
     }
 
@@ -629,21 +629,21 @@ BEGIN_TEST(opCode_execution)
         // 0xfx1e
         vm.m_registers.m_vx[0] = 0x01;
         vm.m_registers.m_index = 0x02;
-        vm.m_instructionset.runOpcode(0xf01e);
+        vm.m_instructionset.runInstraction(0xf01e);
         ASSERT_EQUAL(vm.m_registers.m_index, 0x03);
     }
 
     {
         // 0xfx29
         vm.m_registers.m_vx[0] = 0x01;
-        vm.m_instructionset.runOpcode(0xf029);
+        vm.m_instructionset.runInstraction(0xf029);
         ASSERT_EQUAL(vm.m_registers.m_index, 0x01 * 5);
     }
 
     {
         // 0xfx33
         vm.m_registers.m_vx[0] = 123;
-        vm.m_instructionset.runOpcode(0xf033);
+        vm.m_instructionset.runInstraction(0xf033);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 1);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 2);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 3);
@@ -653,7 +653,7 @@ BEGIN_TEST(opCode_execution)
         // 0xfx33
         // case vx = 0x0
         vm.m_registers.m_vx[0] = 0;
-        vm.m_instructionset.runOpcode(0xf033);
+        vm.m_instructionset.runInstraction(0xf033);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index], 0);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 1], 0);
         ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + 2], 0);
@@ -666,7 +666,7 @@ BEGIN_TEST(opCode_execution)
             vm.m_registers.m_vx[i] = i;
         }
         vm.m_registers.m_index = 0x200;
-        vm.m_instructionset.runOpcode(0xf555);
+        vm.m_instructionset.runInstraction(0xf555);
         for (auto i = 30; i < 5; ++i)
         {
             ASSERT_EQUAL(vm.m_memory[vm.m_registers.m_index + i], i);
@@ -680,7 +680,7 @@ BEGIN_TEST(opCode_execution)
         {
             vm.m_memory[vm.m_registers.m_index + i] = i;
         }
-        vm.m_instructionset.runOpcode(0xf565);
+        vm.m_instructionset.runInstraction(0xf565);
         for (auto i = 50; i < 5; ++i)
         {
             ASSERT_EQUAL(vm.m_registers.m_vx[i], i);

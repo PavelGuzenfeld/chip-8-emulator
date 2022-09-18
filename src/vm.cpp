@@ -92,19 +92,7 @@ namespace chip8
         std::cout << "m_PC-> " << m_registers.m_PC << " opCode-> " << std::hex << std::showbase << opCode << "\n";
 #endif
         m_registers.m_PC += 2;
-        m_instructionset.runOpcode(opCode);
-    }
-
-    void VirtualMachine::drawSprite(U8Bit a_x, U8Bit a_y, U16Bit a_spriteAddress, U8Bit a_lines)
-    {
-        for (U8Bit offsetY = 0; offsetY < a_lines; ++offsetY)
-        {
-            auto y = a_y + offsetY;
-            auto bitIndex = a_spriteAddress + offsetY;
-            auto spriteBits = m_memory[bitIndex];
-            auto vf = m_canvas.drawBits(a_x, y, spriteBits);
-            m_registers.m_vx[0xf] = vf;
-        }
+        m_instructionset.runInstraction(opCode);
     }
 
     void VirtualMachine::loadCode(CodeRerader const &a_code)
@@ -112,15 +100,6 @@ namespace chip8
         std::copy_n(std::begin(a_code.buffer), a_code.size,
                     m_memory.begin() + CODE_LOAD_ADDRESS);
         m_registers.m_PC = CODE_LOAD_ADDRESS;
-    }
-
-    U16Bit VirtualMachine::normalizeOpcode(U16Bit a_opCode)
-    {
-        // swap between first and 3'rd hex digit
-        auto firstByte = (a_opCode & 0x000f) << 8;
-        auto thirdByte = (a_opCode & 0x0f00) >> 8;
-        auto others = a_opCode & 0xf0f0;
-        return others | firstByte | thirdByte;
     }
 
 } // namespace chip8
