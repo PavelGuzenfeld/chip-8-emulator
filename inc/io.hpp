@@ -31,8 +31,6 @@ namespace chip8
         void present();
         void clear();
 
-        void beep(U16Bit a_freq, U16Bit a_duration);
-
     private:
         void drawPixel(U8Bit a_x, U8Bit a_y);
 

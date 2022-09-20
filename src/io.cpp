@@ -87,12 +87,6 @@ namespace chip8
         SDL_RenderPresent(static_cast<SDL_Renderer *>(m_renderer.get()));
     }
 
-    void Renderer::beep(U16Bit a_freq, U16Bit a_duration)
-    {
-        std::cout << '\a';
-        // https://stackoverflow.com/questions/4060601/make-sounds-beep-with-c
-    }
-
     void Renderer::drawPixel(U8Bit a_x, U8Bit a_y)
     {
         SDL_Rect r = {a_x * m_scale, a_y * m_scale, m_scale, m_scale};
