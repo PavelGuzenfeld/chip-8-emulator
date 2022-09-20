@@ -98,13 +98,13 @@ namespace chip8
     {
     }
 
-    void EventLoop::exitProgram()
+    void EventLoop::close()
     {
         SDL_Quit();
         exit(0);
     }
 
-    void EventLoop::operator()()
+    void EventLoop::run()
     {
         SDL_Event event;
         while (SDL_PollEvent(&event) || m_testMode)
@@ -117,7 +117,7 @@ namespace chip8
                 {
                     return;
                 }
-                exitProgram();
+                close();
             }
 
             case SDL_KEYDOWN:

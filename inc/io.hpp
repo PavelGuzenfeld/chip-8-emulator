@@ -46,9 +46,9 @@ namespace chip8
     public:
         EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
 
-        void operator()();
+        void run();
 
-        void exitProgram();
+        void close();
 
     private:
         OnKey m_keyDown;

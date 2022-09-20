@@ -197,7 +197,7 @@ BEGIN_TEST(event_loop)
 
     {
         auto job = [&]()
-        { loop(); };
+        { loop.run(); };
         auto worker = std::thread(job);
         for (auto key : KEY_BOARD)
         {
@@ -214,7 +214,7 @@ BEGIN_TEST(event_loop)
 
     {
         auto job = [&]()
-        { loop(); };
+        { loop.run(); };
         auto worker = std::thread(job);
         for (auto key : KEY_BOARD)
         {

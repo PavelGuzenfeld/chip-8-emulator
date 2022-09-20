@@ -12,7 +12,7 @@ namespace chip8
     {
         while (true)
         {
-            m_loop();
+            m_loop.run();
             m_vm.execute();
             m_vm.delay();
             m_vm.beep();
