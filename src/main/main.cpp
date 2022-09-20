@@ -14,7 +14,8 @@ int main(int argc, char **argv)
     using namespace chip8;
     std::filesystem::path filePath{argv[1]};
     CodeRerader code{filePath};
-    MainLoopRunner manager{code};
+    auto config = StartupConfiguration{};
+    MainLoopRunner manager{code, config};
     manager.runMainLoop();
 
     return 0;

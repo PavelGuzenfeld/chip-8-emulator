@@ -35,27 +35,18 @@ namespace chip8
             width, height, SDL_WINDOW_SHOWN);
     }
 
-    Screen::Screen(U8Bit a_width, U8Bit a_height, U8Bit a_scale)
+    Renderer::Renderer(StartupConfiguration const &a_config)
         : m_screen(
-              initScreen(a_width * a_scale, a_height * a_scale),
+              initScreen(a_config.WIDTH * a_config.SCALE, a_config.HEIGHT * a_config.SCALE),
               [](auto p)
-              { SDL_DestroyWindow(static_cast<SDL_Window *>(p)); })
-    {
-    }
-
-    auto *Screen::internal()
-    {
-        return m_screen.get();
-    }
-
-    Renderer::Renderer(Screen &a_screen, U8Bit a_scale, Color a_back, Color a_fore)
-        : m_renderer(
-              SDL_CreateRenderer(static_cast<SDL_Window *>(a_screen.internal()), -1, SDL_TEXTUREACCESS_TARGET),
+              { SDL_DestroyWindow(static_cast<SDL_Window *>(p)); }),
+          m_renderer(
+              SDL_CreateRenderer(static_cast<SDL_Window *>(m_screen.get()), -1, SDL_TEXTUREACCESS_TARGET),
               [](auto p)
               {
                   SDL_DestroyRenderer(static_cast<SDL_Renderer *>(p));
               }),
-          m_scale(a_scale), m_back(a_back), m_fore(a_fore)
+          m_scale(a_config.SCALE), m_back(a_config.BACK), m_fore(a_config.FORE)
     {
         clear();
     }

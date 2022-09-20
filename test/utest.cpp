@@ -133,8 +133,8 @@ END_TEST
 BEGIN_TEST(screen)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
 
     renderer.clear();
     for (U8Bit x = 0; x < CANVAS_WIDTH; ++x)
@@ -152,8 +152,8 @@ END_TEST
 BEGIN_TEST(canvas)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
 
     for (U8Bit y = 0; y < CANVAS_HEIGHT; ++y)
@@ -243,8 +243,8 @@ END_TEST
 BEGIN_TEST(print_sprites)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/code_reader_test.file"};
@@ -270,8 +270,8 @@ END_TEST
 BEGIN_TEST(display_opcodes)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/test.bin"};
@@ -325,8 +325,8 @@ END_TEST
 BEGIN_TEST(opCode_execution)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/test.bin"};
@@ -692,8 +692,9 @@ END_TEST
 BEGIN_TEST(maneger_initialize)
 {
     using namespace chip8;
+    auto config = StartupConfiguration{};
     auto code = CodeRerader{"./test/code_reader_test.file"};
-    auto m = MainLoopRunner{code};
+    auto m = MainLoopRunner{code, config};
     ASSERT_PASS();
 }
 END_TEST
@@ -701,8 +702,8 @@ END_TEST
 BEGIN_TEST(runtime)
 {
     using namespace chip8;
-    auto screen = Screen{CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_SCALE};
-    auto renderer = Renderer{screen, CANVAS_SCALE, BLACK, WHITE};
+    auto config = StartupConfiguration{};
+    auto renderer = Renderer{config};
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./rom/tank"};

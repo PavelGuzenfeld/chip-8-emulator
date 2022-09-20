@@ -12,12 +12,11 @@ namespace chip8
     class MainLoopRunner
     {
     public:
-        MainLoopRunner(CodeRerader const &a_reader);
+        MainLoopRunner(CodeRerader const &a_reader, StartupConfiguration const &a_config);
 
         void runMainLoop();
 
     private:
-        Screen m_screen;
         Renderer m_renderer;
         Canvas m_canvas;
         KeyBoard m_keyBoard;

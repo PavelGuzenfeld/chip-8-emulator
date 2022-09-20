@@ -6,24 +6,11 @@
 
 namespace chip8
 {
-
     extern KeysMap const KEY_BOARD;
-
-    class Screen
-    {
-    public:
-        Screen(U8Bit a_width, U8Bit a_height, U8Bit a_scale);
-
-        auto *internal();
-
-    private:
-        std::shared_ptr<void> m_screen;
-    };
-
     class Renderer
     {
     public:
-        Renderer(Screen &a_screen, U8Bit a_scale, Color a_back, Color a_fore);
+        Renderer(StartupConfiguration const &a_config);
 
         void setPixel(U8Bit a_x, U8Bit a_y);
         void resetPixel(U8Bit a_x, U8Bit a_y);
@@ -35,6 +22,7 @@ namespace chip8
         void drawPixel(U8Bit a_x, U8Bit a_y);
 
     private:
+        std::shared_ptr<void> m_screen;
         std::shared_ptr<void> m_renderer;
         U8Bit m_scale;
         Color m_back;

@@ -55,6 +55,15 @@ namespace chip8
 
     U16Bit const REFRESH_RATE_MS = 1;
     U16Bit const SOUND_FREQUENCY = 15'000;
+
+    struct StartupConfiguration
+    {
+        U8Bit const WIDTH = CANVAS_WIDTH;
+        U8Bit const HEIGHT = CANVAS_HEIGHT;
+        U8Bit const SCALE = CANVAS_SCALE;
+        Color const FORE = WHITE;
+        Color const BACK = BLACK;
+    };
 } // namespace chip8
 
 #endif // SETTINGS_HPP
