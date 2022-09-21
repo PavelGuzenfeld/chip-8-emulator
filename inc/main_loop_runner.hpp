@@ -5,6 +5,7 @@
 #include "canvas.hpp"
 #include "vm.hpp"
 #include "code_reader.hpp"
+#include <memory>
 
 namespace chip8
 {
@@ -12,12 +13,12 @@ namespace chip8
     class MainLoopRunner
     {
     public:
-        MainLoopRunner(CodeRerader const &a_reader, StartupConfiguration const &a_config);
+        MainLoopRunner(CodeRerader const &a_reader, std::shared_ptr<Renderer> a_renderer);
 
         void runMainLoop();
 
     private:
-        RendererSDL m_renderer;
+        std::shared_ptr<Renderer> m_renderer;
         Canvas m_canvas;
         KeyBoard m_keyBoard;
         EventLoop m_loop;

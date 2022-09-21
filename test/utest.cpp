@@ -153,7 +153,7 @@ BEGIN_TEST(canvas)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
-    auto renderer = RendererSDL{config};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
 
     for (U8Bit y = 0; y < CANVAS_HEIGHT; ++y)
@@ -244,7 +244,7 @@ BEGIN_TEST(print_sprites)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
-    auto renderer = RendererSDL{config};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/code_reader_test.file"};
@@ -271,7 +271,7 @@ BEGIN_TEST(display_opcodes)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
-    auto renderer = RendererSDL{config};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/test.bin"};
@@ -326,7 +326,7 @@ BEGIN_TEST(opCode_execution)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
-    auto renderer = RendererSDL{config};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./test/test.bin"};
@@ -693,8 +693,9 @@ BEGIN_TEST(maneger_initialize)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto code = CodeRerader{"./test/code_reader_test.file"};
-    auto m = MainLoopRunner{code, config};
+    auto m = MainLoopRunner{code, renderer};
     ASSERT_PASS();
 }
 END_TEST
@@ -703,7 +704,7 @@ BEGIN_TEST(runtime)
 {
     using namespace chip8;
     auto config = StartupConfiguration{};
-    auto renderer = RendererSDL{config};
+    auto renderer = std::make_shared<RendererSDL>(config);
     auto canvas = Canvas{renderer, CANVAS_WIDTH, CANVAS_HEIGHT};
     auto keyBoard = KeyBoard(KEY_BOARD);
     auto code = CodeRerader{"./rom/tank"};

@@ -2,7 +2,7 @@
 namespace chip8
 {
 
-    Canvas::Canvas(RendererSDL &a_renderer, U8Bit a_width, U8Bit a_height)
+    Canvas::Canvas(std::shared_ptr<Renderer> a_renderer, U8Bit a_width, U8Bit a_height)
         : m_pixels{}, m_renderer(a_renderer), m_WIDTH(a_width), m_HEIGHT(a_height)
     {
     }
@@ -16,13 +16,13 @@ namespace chip8
         U8Bit y = a_y % m_HEIGHT;
         if (wasTrue)
         {
-            m_renderer.resetPixel(x, y);
+            m_renderer->resetPixel(x, y);
         }
         else
         {
-            m_renderer.setPixel(x, y);
+            m_renderer->setPixel(x, y);
         }
-        m_renderer.present();
+        m_renderer->present();
         return wasTrue;
     }
 
@@ -57,7 +57,7 @@ namespace chip8
         {
             m_pixels[i] = false;
         }
-        m_renderer.clear();
+        m_renderer->clear();
     }
 
     U16Bit Canvas::index(U8Bit a_x, U8Bit a_y)
