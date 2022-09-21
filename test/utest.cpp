@@ -185,11 +185,11 @@ BEGIN_TEST(event_loop)
     using namespace chip8;
 
     auto keyBoard = KeyBoard{KEY_BOARD};
-    auto loop = EventLoop{[&](U8Bit a_key)
-                          { keyBoard.keyDown(a_key); },
-                          [&](U8Bit a_key)
-                          { keyBoard.keyUp(a_key); },
-                          true};
+    auto loop = EventLoopSDL{[&](U8Bit a_key)
+                             { keyBoard.keyDown(a_key); },
+                             [&](U8Bit a_key)
+                             { keyBoard.keyUp(a_key); },
+                             true};
     for (U8Bit key = 0; key < 16; ++key)
     {
         ASSERT_EQUAL(keyBoard.isVirtualKeyDown(key), false);

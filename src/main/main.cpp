@@ -15,7 +15,8 @@ int main(int argc, char **argv)
     std::filesystem::path filePath{argv[1]};
     CodeRerader code{filePath};
     auto config = StartupConfiguration{};
-    MainLoopRunner manager{code, config};
+    auto renderer = std::make_shared<RendererSDL>(config);
+    MainLoopRunner manager{code, renderer};
     manager.runMainLoop();
 
     return 0;

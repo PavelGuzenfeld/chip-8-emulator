@@ -1,9 +1,10 @@
 #ifndef IO_HPP
 #define IO_HPP
 
+#include <memory>
 #include "settings.hpp"
 #include "renderer.hpp"
-#include <memory>
+#include "event_loop.hpp"
 
 namespace chip8
 {
@@ -30,13 +31,12 @@ namespace chip8
         Color m_fore;
     };
 
-    class EventLoop
+    class EventLoopSDL : public EventLoop
     {
     public:
-        EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
+        EventLoopSDL(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode = false);
 
         void run();
-
         void close();
 
     private:

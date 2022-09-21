@@ -21,7 +21,7 @@ namespace chip8
         std::shared_ptr<Renderer> m_renderer;
         Canvas m_canvas;
         KeyBoard m_keyBoard;
-        EventLoop m_loop;
+        EventLoopSDL m_loop;
         VirtualMachine m_vm;
     };
 

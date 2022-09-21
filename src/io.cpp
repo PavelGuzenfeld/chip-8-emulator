@@ -84,18 +84,18 @@ namespace chip8
         SDL_RenderFillRect(static_cast<SDL_Renderer *>(m_renderer.get()), &r);
     }
 
-    EventLoop::EventLoop(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode)
+    EventLoopSDL::EventLoopSDL(OnKey a_keyDown, OnKey a_keyUp, bool a_testMode)
         : m_keyDown(a_keyDown), m_keyUp(a_keyUp), m_testMode(a_testMode)
     {
     }
 
-    void EventLoop::close()
+    void EventLoopSDL::close()
     {
         SDL_Quit();
         exit(0);
     }
 
-    void EventLoop::run()
+    void EventLoopSDL::run()
     {
         SDL_Event event;
         while (SDL_PollEvent(&event) || m_testMode)
