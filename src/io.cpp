@@ -35,7 +35,7 @@ namespace chip8
             width, height, SDL_WINDOW_SHOWN);
     }
 
-    Renderer::Renderer(StartupConfiguration const &a_config)
+    RendererSDL::RendererSDL(StartupConfiguration const &a_config)
         : m_screen(
               initScreen(a_config.WIDTH * a_config.SCALE, a_config.HEIGHT * a_config.SCALE),
               [](auto p)
@@ -51,21 +51,21 @@ namespace chip8
         clear();
     }
 
-    void Renderer::setPixel(U8Bit a_x, U8Bit a_y)
+    void RendererSDL::setPixel(U8Bit a_x, U8Bit a_y)
     {
         SDL_SetRenderDrawColor(static_cast<SDL_Renderer *>(m_renderer.get()),
                                m_fore.r, m_fore.g, m_fore.b, m_fore.a);
         drawPixel(a_x, a_y);
     }
 
-    void Renderer::resetPixel(U8Bit a_x, U8Bit a_y)
+    void RendererSDL::resetPixel(U8Bit a_x, U8Bit a_y)
     {
         SDL_SetRenderDrawColor(static_cast<SDL_Renderer *>(m_renderer.get()),
                                m_back.r, m_back.g, m_back.b, m_back.a);
         drawPixel(a_x, a_y);
     }
 
-    void Renderer::clear()
+    void RendererSDL::clear()
     {
         SDL_SetRenderDrawColor(static_cast<SDL_Renderer *>(m_renderer.get()),
                                m_back.r, m_back.g, m_back.b, m_back.a);
@@ -73,12 +73,12 @@ namespace chip8
         present();
     }
 
-    void Renderer::present()
+    void RendererSDL::present()
     {
         SDL_RenderPresent(static_cast<SDL_Renderer *>(m_renderer.get()));
     }
 
-    void Renderer::drawPixel(U8Bit a_x, U8Bit a_y)
+    void RendererSDL::drawPixel(U8Bit a_x, U8Bit a_y)
     {
         SDL_Rect r = {a_x * m_scale, a_y * m_scale, m_scale, m_scale};
         SDL_RenderFillRect(static_cast<SDL_Renderer *>(m_renderer.get()), &r);

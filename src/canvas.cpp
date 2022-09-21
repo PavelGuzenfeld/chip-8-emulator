@@ -2,7 +2,7 @@
 namespace chip8
 {
 
-    Canvas::Canvas(Renderer &a_renderer, U8Bit a_width, U8Bit a_height)
+    Canvas::Canvas(RendererSDL &a_renderer, U8Bit a_width, U8Bit a_height)
         : m_pixels{}, m_renderer(a_renderer), m_WIDTH(a_width), m_HEIGHT(a_height)
     {
     }

@@ -2,15 +2,16 @@
 #define IO_HPP
 
 #include "settings.hpp"
+#include "renderer.hpp"
 #include <memory>
 
 namespace chip8
 {
     extern KeysMap const KEY_BOARD;
-    class Renderer
+    class RendererSDL : public Renderer
     {
     public:
-        Renderer(StartupConfiguration const &a_config);
+        RendererSDL(StartupConfiguration const &a_config);
 
         void setPixel(U8Bit a_x, U8Bit a_y);
         void resetPixel(U8Bit a_x, U8Bit a_y);

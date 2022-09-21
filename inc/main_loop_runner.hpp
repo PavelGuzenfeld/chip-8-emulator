@@ -17,7 +17,7 @@ namespace chip8
         void runMainLoop();
 
     private:
-        Renderer m_renderer;
+        RendererSDL m_renderer;
         Canvas m_canvas;
         KeyBoard m_keyBoard;
         EventLoop m_loop;
