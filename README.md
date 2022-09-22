@@ -2,11 +2,25 @@
 
 * Chip-8 emulator written in C++17
 
-# Dependencies
+## Dependencies
 
 * sdl2
 
-# References
+## Build
+
+```bash
+mkdir build
+mkdir bin
+make clean all
+```
+
+## Run
+
+```bash
+./bin/chip8-emulator <rom>
+```
+
+## References
 
 Some helpful resources:
 
@@ -16,6 +30,6 @@ Some helpful resources:
 * <https://github.com/JamesGriffin/CHIP-8-Emulator/tree/master/roms>
 * <https://github.com/corax89/chip8-test-rom>
 
-# Games ROM
+## ROM resources
 
 * <https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html>
