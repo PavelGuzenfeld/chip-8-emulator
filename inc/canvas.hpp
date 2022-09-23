@@ -25,7 +25,6 @@ namespace chip8
     private:
         Pixels m_pixels;
         std::shared_ptr<Renderer> m_renderer;
-        // Renderer &m_renderer;
         U16Bit const m_WIDTH;
         U16Bit const m_HEIGHT;
     };

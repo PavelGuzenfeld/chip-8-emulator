@@ -7,7 +7,7 @@
 namespace chip8
 {
 
-    CodeRerader::CodeRerader(std::filesystem::path const &a_file)
+    CodeReader::CodeReader(std::filesystem::path const &a_file)
     try : size(std::filesystem::file_size(a_file)), buffer{}
     {
 #ifndef NDEBUG

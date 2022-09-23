@@ -3,7 +3,6 @@
 #include "registers.hpp"
 #include "keyboard.hpp"
 #include "canvas.hpp"
-#include "code_reader.hpp"
 
 namespace chip8
 {

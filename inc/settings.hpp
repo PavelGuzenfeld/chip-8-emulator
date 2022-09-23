@@ -1,5 +1,4 @@
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -65,5 +64,3 @@ namespace chip8
         Color const BACK = BLACK;
     };
 } // namespace chip8
-
-#endif // SETTINGS_HPP
