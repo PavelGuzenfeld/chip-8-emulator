@@ -1,11 +1,13 @@
 #pragma once
 
-#include "settings.hpp"
-#include "io.hpp"
-#include "canvas.hpp"
-#include "vm.hpp"
-#include "code_reader.hpp"
 #include <memory>
+#include "settings.hpp"
+#include "renderer.hpp"
+#include "event_loop.hpp"
+#include "canvas.hpp"
+#include "code_reader.hpp"
+#include "bus.hpp"
+#include "instructionset.hpp"
 
 namespace chip8
 {
@@ -13,16 +15,14 @@ namespace chip8
     class MainLoopRunner
     {
     public:
-        MainLoopRunner(CodeRerader const &a_reader, std::shared_ptr<Renderer> a_renderer);
+        MainLoopRunner(Bus &a_bus, Instructionset &a_instructionset, std::shared_ptr<EventLoop> const &a_loop);
 
-        void runMainLoop();
+        void run();
 
     private:
-        std::shared_ptr<Renderer> m_renderer;
-        Canvas m_canvas;
-        KeyBoard m_keyBoard;
-        EventLoopSDL m_loop;
-        VirtualMachine m_vm;
+        Bus &m_bus;
+        Instructionset &m_instructionset;
+        std::shared_ptr<EventLoop> m_loop;
     };
 
 } // namespace chip8

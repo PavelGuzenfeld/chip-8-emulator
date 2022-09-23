@@ -1,21 +1,23 @@
 #include "main_loop_runner.hpp"
-#include <memory>
+#include "delay_functions.hpp"
 namespace chip8
 {
 
-    MainLoopRunner::MainLoopRunner(CodeRerader const &a_reader, std::shared_ptr<Renderer> a_renderer)
-        : m_renderer{a_renderer}, m_canvas{m_renderer, CANVAS_WIDTH, CANVAS_HEIGHT}, m_keyBoard{KEY_BOARD}, m_loop{onKeyDown(m_keyBoard), onKeyUp(m_keyBoard)}, m_vm{m_keyBoard, m_canvas, a_reader}
+    MainLoopRunner::MainLoopRunner(Bus &a_bus, Instructionset &a_instructionset, std::shared_ptr<EventLoop> const &a_loop)
+        : m_bus{a_bus},
+          m_instructionset{a_instructionset},
+          m_loop{a_loop}
     {
     }
 
-    void MainLoopRunner::runMainLoop()
+    void MainLoopRunner::run()
     {
         while (true)
         {
-            m_loop.run();
-            m_vm.execute();
-            m_vm.delay();
-            m_vm.beep();
+            m_loop->run();
+            m_instructionset.runNextInstruction();
+            delay(m_bus.m_registers.m_delayTimer);
+            beep(m_bus.m_registers.m_soundTimer);
         }
     }
 
