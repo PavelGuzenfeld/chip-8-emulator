@@ -8,9 +8,10 @@ namespace chip8
     class Instructionset
     {
     public:
-        explicit Instructionset(Bus const &a_bus);
-        void runInstraction(U16Bit a_opCode);
+        explicit Instructionset(Bus &a_bus);
         U16Bit readInstruction(U16Bit a_address);
+        void runInstraction(U16Bit a_opCode);
+        void runNextInstruction();
 
     private:
         auto instructionSetInit();
@@ -18,7 +19,7 @@ namespace chip8
         U16Bit normalizeOpcode(U16Bit a_opCode);
 
     private:
-        Bus m_bus;
+        Bus &m_bus;
         InstructionSet m_instructionSet;
     };
 

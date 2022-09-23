@@ -399,7 +399,7 @@ namespace chip8
         };
     }
 
-    Instructionset::Instructionset(Bus const &a_bus)
+    Instructionset::Instructionset(Bus &a_bus)
         : m_bus{a_bus}, m_instructionSet{instructionSetInit()}
     {
     }
@@ -437,6 +437,16 @@ namespace chip8
         auto normalizedOpcode = normalizeOpcode(a_opCode);
         auto runCommand = m_instructionSet.lower_bound(normalizedOpcode)->second;
         runCommand(a_opCode);
+    }
+
+    void Instructionset::runNextInstruction()
+    {
+        auto opCode = readInstruction(m_bus.m_registers.m_PC);
+#ifndef NDEBUG
+        std::cout << "m_PC-> " << m_bus.m_registers.m_PC << " opCode-> " << std::hex << std::showbase << opCode << "\n";
+#endif
+        m_bus.m_registers.m_PC += 2;
+        runInstraction(opCode);
     }
 
 } // namespace chip8
